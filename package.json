@@ -58,5 +58,6 @@
   "lint-staged": {
     "*.ts": "npm run fix-style",
     "*.js": "npm run fix-style"
-  }
+  },
+  "type": "module"
 }
