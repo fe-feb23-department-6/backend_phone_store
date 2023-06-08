@@ -1,9 +1,15 @@
 'use strict';
 
 import express from 'express';
+import { dbInit } from './utils/dbInit';
+import cors from 'cors';
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 3000;
+
+dbInit();
+
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.send('Hello world');
