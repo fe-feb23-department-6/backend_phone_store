@@ -34,6 +34,7 @@
     "concurrently": "^8.1.0",
     "eslint": "^8.42.0",
     "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
     "nodemon": "^2.0.22",
     "prettier": "2.8.8",
     "ts-node": "^10.9.1",
@@ -50,5 +51,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "lint-staged": {
+    "*.ts": "eslint --cache --fix",
+    "*.js": "eslint --cache --fix"
   }
 }
