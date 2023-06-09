@@ -8,14 +8,13 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { Phone } from './Phone';
+import { Phones } from './Phones';
 
 @Table({
   tableName: 'products',
   createdAt: false,
   updatedAt: false,
 })
-
 export class Products extends Model {
   @PrimaryKey
   @AllowNull(false)
@@ -30,15 +29,15 @@ export class Products extends Model {
   })
     category: string;
 
-  @ForeignKey(() => Phone)
+  @ForeignKey(() => Phones)
   @AllowNull(false)
   @Column({
     type: DataType.STRING,
   })
     phoneId: string;
 
-  @BelongsTo(() => Phone)
-    phone: Phone | null;
+  @BelongsTo(() => Phones)
+    phone: Phones | null;
 
   @AllowNull(false)
   @Column({

@@ -2,24 +2,29 @@ import {
   AllowNull,
   Column,
   DataType,
+  HasOne,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
+import { Products } from './Products';
 
 @Table({
-  tableName: 'phone',
+  tableName: 'phones',
   createdAt: false,
   updatedAt: false,
 })
 
-export class Phone extends Model {
+export class Phones extends Model {
   @PrimaryKey
   @AllowNull(false)
   @Column({
     type: DataType.STRING,
   })
     id: string;
+
+  @HasOne(() => Products)
+    products: Products;
 
   @AllowNull(false)
   @Column({
