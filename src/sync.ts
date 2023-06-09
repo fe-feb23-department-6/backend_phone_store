@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 /* eslint-disable no-console */
 import { Phones } from './models/Phones';
 import { Products } from './models/Products';
@@ -8,7 +7,9 @@ import path from 'path';
 
 const seedInitialPhones = async() => {
   try {
-    const phonesFolderPath = path.join(__dirname, '..', 'public', 'api', 'phones');
+    const phonesFolderPath = path.join(
+      __dirname, '..', 'public', 'api', 'phones',
+    );
 
     const phoneFiles = fs.readdirSync(phonesFolderPath);
 
