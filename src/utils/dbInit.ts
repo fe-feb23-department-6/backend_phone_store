@@ -3,8 +3,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { models } from '../models';
 require('dotenv').config();
 
-const URI = `postgres://${process.env.PGUSER}:${process.env.PGPASSWORD}`
-+ `@${process.env.PGHOST}/${process.env.PGDATABASE}`;
+const URI = `postgres://${process.env.PGUSER}:${process.env.PGPASSWORD}@${process.env.PGHOST}/${process.env.PGDATABASE}`;
 
 export const dbInit = () => {
   try {

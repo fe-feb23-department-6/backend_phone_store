@@ -3,6 +3,7 @@
 import { dbInit } from './utils/dbInit';
 import cors from 'cors';
 import { router as productsRouter } from './routes/products';
+import { Request as Req, Response as Res } from 'express';
 
 const express = require('express');
 
@@ -12,6 +13,10 @@ const PORT = process.env.PORT || 3000;
 dbInit();
 
 app.use(cors());
+
+app.get('/', (req: Req, res: Res) => {
+  res.send("Hello world");
+});
 
 app.use('/products', express.json(), productsRouter);
 
