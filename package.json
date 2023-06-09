@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server.ts",
     "dev": "nodemon src/server.ts",
-    "build": "npx swc src -d build",
+    "build": "npx swc src -d build/src",
     "format": "prettier --write . --ignore-path .gitignore",
     "lint": "eslint . --ignore-path .gitignore --fix --ext .ts",
     "lint:fix": "npm run lint -- --fix",
