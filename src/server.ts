@@ -1,8 +1,10 @@
 'use strict';
 
-import express from 'express';
 import { dbInit } from './utils/dbInit';
 import cors from 'cors';
+import { router as productsRouter } from './routes/products';
+
+const express = require('express');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,9 +13,7 @@ dbInit();
 
 app.use(cors());
 
-app.get('/', (req, res) => {
-  res.send('Hello world');
-});
+app.use('/products', express.json(), productsRouter);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console

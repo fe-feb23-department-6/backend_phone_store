@@ -15,6 +15,7 @@ import { Phones } from './Phones';
   createdAt: false,
   updatedAt: false,
 })
+
 export class Products extends Model {
   @PrimaryKey
   @AllowNull(false)
