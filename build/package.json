@@ -10,8 +10,7 @@
     "format": "prettier --write . --ignore-path .gitignore",
     "lint": "eslint . --ignore-path .gitignore --fix --ext .ts",
     "lint:fix": "npm run lint -- --fix",
-    "fix-style": "npm run format && npm run lint",
-    "prepare": "husky install"
+    "fix-style": "npm run format && npm run lint"
   },
   "repository": {
     "type": "git",
@@ -40,7 +39,6 @@
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "concurrently": "^8.1.0",
     "eslint": "^8.42.0",
-    "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
     "nodemon": "^2.0.22",
     "prettier": "2.8.8",
