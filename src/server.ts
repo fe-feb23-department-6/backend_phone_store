@@ -2,7 +2,9 @@
 
 import { dbInit } from './utils/dbInit';
 import cors from 'cors';
+import path from 'path';
 import { router as productsRouter } from './routes/products';
+import { router as imagesRouter } from './routes/images';
 import { Request as Req, Response as Res } from 'express';
 
 const express = require('express');
@@ -17,6 +19,9 @@ app.use(cors());
 app.get('/', (req: Req, res: Res) => {
   res.send("Hello world");
 });
+
+app.use('/public', express.static(path.join(__dirname, 'pablic')));
+app.use(imagesRouter);
 
 app.use('/products', express.json(), productsRouter);
 
