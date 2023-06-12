@@ -1,9 +1,13 @@
 import { Products } from '../models/Products';
-import { filterProducts } from '../utils/filterProdacts';
+import { SortType } from '../types/sortType';
+import { filterProducts } from '../utils/filterProducts';
 import { getProductsWitUrl } from '../utils/getProductsWitUrl';
-import { ParsedQs } from 'qs';
 
-const getProductsWithPagination = async (pageNumber: number, limitNumber: number, sort: string | ParsedQs | string[] | ParsedQs[]) => {
+const getProductsWithPagination = async (
+  pageNumber: number, 
+  limitNumber: number, 
+  sort: SortType
+) => {
   const offset = (pageNumber - 1) * limitNumber;
   const filterOption = filterProducts(sort);
 

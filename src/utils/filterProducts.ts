@@ -1,7 +1,7 @@
 import { Order } from "sequelize";
-import { ParsedQs } from 'qs';
+import { SortType } from "../types/sortType";
 
-export const filterProducts = (sort: string | ParsedQs | string[] | ParsedQs[]) => {
+export const filterProducts = (sort: SortType) => {
   let filterOptions: Order = [['year', 'DESC']];
 
   switch (sort) {
