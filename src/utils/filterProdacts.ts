@@ -4,12 +4,18 @@ import { ParsedQs } from 'qs';
 export const filterProducts = (sort: string | ParsedQs | string[] | ParsedQs[]) => {
   let filterOptions: Order = [['year', 'DESC']];
 
-  if (sort === 'cheapest') {
-    filterOptions = [['price', 'ASC']];
-  } else if (sort === 'expensive') {
-    filterOptions = [['price', 'DESC']];
-  } else if (sort === 'newest') {
-    filterOptions = [['year', 'DESC']];
+  switch (sort) {
+    case 'cheapest':
+      filterOptions = [['price', 'ASC']];
+      break;
+
+    case 'expensive':
+      filterOptions = [['price', 'DESC']];
+      break
+
+    case 'newest':
+    default:
+      filterOptions = [['year', 'DESC']];
   }
 
   return filterOptions;
