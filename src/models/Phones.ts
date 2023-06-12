@@ -1,5 +1,6 @@
 import {
   AllowNull,
+  AutoIncrement,
   Column,
   DataType,
   HasOne,
@@ -17,6 +18,7 @@ import { Products } from './Products';
 
 export class Phones extends Model {
   @PrimaryKey
+  @AutoIncrement
   @AllowNull(false)
   @Column({
     type: DataType.STRING,
@@ -84,7 +86,7 @@ export class Phones extends Model {
   @Column({
     type: DataType.ARRAY(DataType.JSONB),
   })
-    description: Array<{ title: string, text: string[] }>;
+    description: string[];
 
   @AllowNull(false)
   @Column({

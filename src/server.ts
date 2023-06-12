@@ -20,7 +20,7 @@ app.get('/', (req: Req, res: Res) => {
   res.send("Hello world");
 });
 
-app.use('/public', express.static(path.join(__dirname, 'pablic')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(imagesRouter);
 
 app.use('/products', express.json(), productsRouter);

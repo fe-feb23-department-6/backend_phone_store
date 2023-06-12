@@ -1,5 +1,6 @@
 import {
   AllowNull,
+  AutoIncrement,
   BelongsTo,
   Column,
   DataType,
@@ -18,6 +19,7 @@ import { Phones } from './Phones';
 
 export class Products extends Model {
   @PrimaryKey
+  @AutoIncrement
   @AllowNull(false)
   @Column({
     type: DataType.STRING,
