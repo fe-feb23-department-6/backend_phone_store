@@ -1,7 +1,7 @@
 import { Products } from '../models/Products';
 import { SortType } from '../types/sortType';
 import { filterProducts } from '../utils/filterProducts';
-import { getProductsWitUrl } from '../utils/getProductsWitUrl';
+import { getProductsWithUrl } from '../utils/getProductsWithUrl';
 
 const getProductsWithPagination = async (
   pageNumber: number, 
@@ -20,7 +20,7 @@ const getProductsWithPagination = async (
 
     const totalPages = Math.ceil(products.count / limitNumber);
 
-    const productsWithURL = getProductsWitUrl(products.rows);
+    const productsWithURL = getProductsWithUrl(products.rows);
 
     return {
       products: productsWithURL,

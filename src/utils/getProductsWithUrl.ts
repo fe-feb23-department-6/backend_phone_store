@@ -1,7 +1,7 @@
 import { BASE_URL } from "../constants";
 import { Products } from "../models/Products";
 
-export const getProductsWitUrl = (products: Products[]) => {
+export const getProductsWithUrl = (products: Products[]) => {
   const productsWithURL = products.map(product => {
     const fullImageUrl = `${BASE_URL}/${product.image}`;
 
