@@ -8,7 +8,7 @@ const getProductsWithPagination = async (
   pageNumber: number, 
   limitNumber: number, 
   sort: SortType,
-  query?: SortType
+  query?: SortType,
 ) => {
   const offset = (pageNumber - 1) * limitNumber;
   const sortOptions = sortProducts(sort);
