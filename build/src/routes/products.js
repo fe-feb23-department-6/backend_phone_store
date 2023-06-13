@@ -17,3 +17,4 @@ function _interop_require_default(obj) {
 }
 const router = _express.default.Router();
 router.get('/', _products.productsController.getProducts);
+router.get('/new', _products.productsController.getNewestProducts);
