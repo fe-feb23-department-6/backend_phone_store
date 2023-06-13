@@ -1,5 +1,5 @@
-import { Order } from "sequelize";
-import { SortType } from "../types/sortType";
+import { Order } from 'sequelize';
+import { SortType } from '../types/sortType';
 
 export const sortProducts = (sort: SortType) => {
   let sortOptions: Order = [['year', 'DESC']];
@@ -11,7 +11,11 @@ export const sortProducts = (sort: SortType) => {
 
     case 'expensive':
       sortOptions = [['price', 'DESC']];
-      break
+      break;
+
+    case 'abc':
+      sortOptions = [['name', 'ASC']];
+      break;
 
     case 'newest':
     default:
@@ -19,4 +23,4 @@ export const sortProducts = (sort: SortType) => {
   }
 
   return sortOptions;
-}
+};

@@ -9,8 +9,8 @@ const getProducts = async(req: Req, res: Res) => {
 
   try {
     const paginationData = await productsService.getProductsWithPagination(
-      pageNumber, 
-      limitNumber, 
+      pageNumber,
+      limitNumber,
       sort,
       query,
     );
@@ -20,8 +20,18 @@ const getProducts = async(req: Req, res: Res) => {
 
       return;
     }
-    
+
     res.json(paginationData);
+  } catch (error) {
+    res.status(500);
+  }
+};
+
+const getNewestProducts = async(req: Req, res: Res) => {
+  try {
+    const newProducts = await productsService.getNewProducts();
+
+    res.send(newProducts);
   } catch (error) {
     res.status(500);
   }
@@ -29,4 +39,5 @@ const getProducts = async(req: Req, res: Res) => {
 
 export const productsController = {
   getProducts,
+  getNewestProducts,
 };

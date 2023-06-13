@@ -17,13 +17,15 @@ dbInit();
 app.use(cors());
 
 app.get('/', (req: Req, res: Res) => {
-  res.send("Hello world");
+  res.send('Hello world');
 });
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(imagesRouter);
 
 app.use('/products', express.json(), productsRouter);
+// app.use('/discount', express.json(), hotRouter);
+// app.use('/recommended', express.json(), relatedRouter);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console

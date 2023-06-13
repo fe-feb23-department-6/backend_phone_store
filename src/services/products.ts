@@ -1,12 +1,13 @@
+'use strict';
 import { Products } from '../models/Products';
 import { SortType } from '../types/sortType';
 import { sortProducts } from '../utils/sortProducts';
 import { getProductsWithUrl } from '../utils/getProductsWithUrl';
 import { filterProducts } from '../utils/filterProducts';
 
-const getProductsWithPagination = async (
-  pageNumber: number, 
-  limitNumber: number, 
+const getProductsWithPagination = async(
+  pageNumber: number,
+  limitNumber: number,
   sort: SortType,
   query?: SortType,
 ) => {
@@ -37,6 +38,22 @@ const getProductsWithPagination = async (
   }
 };
 
+const getNewProducts = async() => {
+  const sortOptions = sortProducts('newest');
+
+  try {
+    const newProducts = await Products.findAll({
+      order: sortOptions,
+      limit: 10,
+    });
+
+    return newProducts;
+  } catch (error) {
+    throw new Error('Failed to get products');
+  }
+};
+
 export const productsService = {
   getProductsWithPagination,
+  getNewProducts,
 };

@@ -1,7 +1,7 @@
-import path from "path";
+import path from 'path';
 
 function getOneImage(imagePath: string) {
-  const absoluteImagePath = path.join(__dirname, '../../public', imagePath)
+  const absoluteImagePath = path.join(__dirname, '../../public', imagePath);
 
   return absoluteImagePath;
 }

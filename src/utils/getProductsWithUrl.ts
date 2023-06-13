@@ -1,5 +1,5 @@
-import { BASE_URL } from "../constants";
-import { Products } from "../models/Products";
+import { BASE_URL } from '../constants';
+import { Products } from '../models/Products';
 
 export const getProductsWithUrl = (products: Products[]) => {
   const productsWithURL = products.map(product => {
@@ -19,8 +19,8 @@ export const getProductsWithUrl = (products: Products[]) => {
       ram: product.ram,
       year: product.year,
       image: fullImageUrl,
-    }
+    };
   });
 
   return productsWithURL;
-}
+};
