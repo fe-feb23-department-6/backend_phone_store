@@ -2,7 +2,7 @@
 import { Products } from '../models/Products';
 import { SortType } from '../types/sortType';
 import { sortProducts } from '../utils/sortProducts';
-import { getProductsWithUrl } from '../utils/getProductsWithUrl';
+// import { getProductsWithUrl } from '../utils/getProductsWithUrl';
 import { filterProducts } from '../utils/filterProducts';
 
 const getProductsWithPagination = async(
@@ -26,10 +26,10 @@ const getProductsWithPagination = async(
 
     const totalPages = Math.ceil(products.count / limitNumber);
 
-    const productsWithURL = getProductsWithUrl(products.rows);
+    // const productsWithURL = getProductsWithUrl(products.rows);
 
     return {
-      products: productsWithURL,
+      products: products.rows,
       currentPage: pageNumber,
       totalPages: totalPages,
     };

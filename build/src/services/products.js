@@ -10,7 +10,6 @@ Object.defineProperty(exports, "productsService", {
 });
 const _Products = require("../models/Products");
 const _sortProducts = require("../utils/sortProducts");
-const _getProductsWithUrl = require("../utils/getProductsWithUrl");
 const _filterProducts = require("../utils/filterProducts");
 const getProductsWithPagination = async (pageNumber, limitNumber, sort, query)=>{
     const offset = (pageNumber - 1) * limitNumber;
@@ -24,9 +23,9 @@ const getProductsWithPagination = async (pageNumber, limitNumber, sort, query)=>
             limit: limitNumber
         });
         const totalPages = Math.ceil(products.count / limitNumber);
-        const productsWithURL = (0, _getProductsWithUrl.getProductsWithUrl)(products.rows);
+        // const productsWithURL = getProductsWithUrl(products.rows);
         return {
-            products: productsWithURL,
+            products: products.rows,
             currentPage: pageNumber,
             totalPages: totalPages
         };
