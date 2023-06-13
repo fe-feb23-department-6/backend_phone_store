@@ -1,20 +1,25 @@
 import { Products } from '../models/Products';
 import { SortType } from '../types/sortType';
-import { filterProducts } from '../utils/filterProducts';
+import { sortProducts } from '../utils/sortProducts';
 import { getProductsWithUrl } from '../utils/getProductsWithUrl';
+import { filterProducts } from '../utils/filterProducts';
 
 const getProductsWithPagination = async (
   pageNumber: number, 
   limitNumber: number, 
-  sort: SortType
+  sort: SortType,
+  query?: SortType
 ) => {
   const offset = (pageNumber - 1) * limitNumber;
-  const filterOption = filterProducts(sort);
+  const sortOptions = sortProducts(sort);
+
+  const whereConditions = query ? filterProducts(query) : {};
 
   try {
     const products = await Products.findAndCountAll({
-      order: filterOption,
-      offset: offset,
+      where: whereConditions,
+      order: sortOptions,
+      offset,
       limit: limitNumber,
     });
 

@@ -1,22 +1,10 @@
-import { Order } from "sequelize";
+import { Op, WhereOptions } from "sequelize";
 import { SortType } from "../types/sortType";
 
-export const filterProducts = (sort: SortType) => {
-  let filterOptions: Order = [['year', 'DESC']];
+export const filterProducts = (query: SortType) => {
+  const whereConditions: WhereOptions = {}
 
-  switch (sort) {
-    case 'cheapest':
-      filterOptions = [['price', 'ASC']];
-      break;
+  whereConditions.name = { [Op.iLike]: `%${query}%` };
 
-    case 'expensive':
-      filterOptions = [['price', 'DESC']];
-      break
-
-    case 'newest':
-    default:
-      filterOptions = [['year', 'DESC']];
-  }
-
-  return filterOptions;
+  return whereConditions
 }

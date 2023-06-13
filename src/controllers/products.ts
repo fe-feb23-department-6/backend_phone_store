@@ -3,7 +3,7 @@ import { Request as Req, Response as Res } from 'express';
 import { productsService } from '../services/products';
 
 const getProducts = async(req: Req, res: Res) => {
-  const { page = '1', limit = '16', sort = 'newest' } = req.query;
+  const { page = '1', limit = '16', sort = 'newest', query } = req.query;
   const pageNumber = Number(page);
   const limitNumber = Number(limit);
 
@@ -11,7 +11,8 @@ const getProducts = async(req: Req, res: Res) => {
     const paginationData = await productsService.getProductsWithPagination(
       pageNumber, 
       limitNumber, 
-      sort
+      sort,
+      query,
     );
     
     res.json(paginationData);
