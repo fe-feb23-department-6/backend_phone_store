@@ -14,6 +14,12 @@ const getProducts = async(req: Req, res: Res) => {
       sort,
       query,
     );
+
+    if (paginationData.products.length === 0) {
+      res.sendStatus(404);
+
+      return;
+    }
     
     res.json(paginationData);
   } catch (error) {
