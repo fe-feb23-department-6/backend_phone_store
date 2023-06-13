@@ -12,7 +12,7 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-dbInit();
+export const sequelize = dbInit();
 
 app.use(cors());
 

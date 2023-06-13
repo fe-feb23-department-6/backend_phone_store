@@ -2,12 +2,10 @@
 import { Products } from '../models/Products';
 import { SortType } from '../types/sortType';
 import { sortProducts } from '../utils/sortProducts';
-// import { getProductsWithUrl } from '../utils/getProductsWithUrl';
 import { filterProducts } from '../utils/filterProducts';
-// import { sequelize } from '../server';
 import { literal } from 'sequelize';
 import { Phones } from '../models/Phones';
-// import sequelize from 'sequelize/types/sequelize';
+import { sequelize } from '../server';
 
 const getProductsWithPagination = async(
   pageNumber: number,
@@ -78,9 +76,23 @@ const getProductById = async(phoneId: string) => {
   }
 };
 
+const getRecommendedProducts = async() => {
+  try {
+    const recommendedProducts = await Products.findAll({
+      order: sequelize?.random(),
+      limit: 10,
+    });
+
+    return recommendedProducts;
+  } catch (error) {
+    throw new Error('Failed to get products');
+  }
+};
+
 export const productsService = {
   getProductsWithPagination,
   getNewProducts,
   getHotProducts,
   getProductById,
+  getRecommendedProducts,
 };
