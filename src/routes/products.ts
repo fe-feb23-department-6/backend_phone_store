@@ -8,3 +8,4 @@ export const router = express.Router();
 router.get('/', productsController.getProducts);
 router.get('/new', productsController.getNewestProducts);
 router.get('/discount', productsController.getHotPriceProducts);
+router.get('/:id', productsController.getProductById);

@@ -6,6 +6,7 @@ import { sortProducts } from '../utils/sortProducts';
 import { filterProducts } from '../utils/filterProducts';
 // import { sequelize } from '../server';
 import { literal } from 'sequelize';
+import { Phones } from '../models/Phones';
 // import sequelize from 'sequelize/types/sequelize';
 
 const getProductsWithPagination = async(
@@ -67,8 +68,19 @@ const getHotProducts = async() => {
   }
 };
 
+const getProductById = async(phoneId: string) => {
+  try {
+    const product = await Phones.findByPk(phoneId);
+
+    return product;
+  } catch (error) {
+    throw new Error('Failed to get product');
+  }
+};
+
 export const productsService = {
   getProductsWithPagination,
   getNewProducts,
   getHotProducts,
+  getProductById,
 };

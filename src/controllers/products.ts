@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 import { Request as Req, Response as Res } from 'express';
 import { productsService } from '../services/products';
@@ -47,8 +48,27 @@ const getHotPriceProducts = async(req: Req, res: Res) => {
   }
 };
 
+const getProductById = async(req: Req, res: Res) => {
+  const { id } = req.params;
+
+  try {
+    const product = await productsService.getProductById(id);
+
+    if (!product) {
+      res.sendStatus(404);
+
+      return;
+    }
+
+    res.send(product);
+  } catch (error) {
+    res.status(500);
+  }
+};
+
 export const productsController = {
   getProducts,
   getNewestProducts,
   getHotPriceProducts,
+  getProductById,
 };
