@@ -50,6 +50,7 @@ let Products = class Products extends _sequelizetypescript.Model {
 };
 _ts_decorate([
     _sequelizetypescript.PrimaryKey,
+    _sequelizetypescript.AutoIncrement,
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({
         type: _sequelizetypescript.DataType.STRING
