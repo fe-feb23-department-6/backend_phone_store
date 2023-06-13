@@ -1,6 +1,5 @@
 import {
   AllowNull,
-  AutoIncrement,
   Column,
   DataType,
   HasOne,
@@ -18,7 +17,6 @@ import { Products } from './Products';
 
 export class Phones extends Model {
   @PrimaryKey
-  @AutoIncrement
   @AllowNull(false)
   @Column({
     type: DataType.STRING,
@@ -30,6 +28,7 @@ export class Phones extends Model {
 
   @AllowNull(false)
   @Column({
+    field: 'namespace_id',
     type: DataType.STRING,
   })
     namespaceId: string;
@@ -42,6 +41,7 @@ export class Phones extends Model {
 
   @AllowNull(false)
   @Column({
+    field: 'capacity_available',
     type: DataType.ARRAY(DataType.STRING),
   })
     capacityAvailable: string[];
@@ -54,18 +54,21 @@ export class Phones extends Model {
 
   @AllowNull(false)
   @Column({
+    field: 'price_regular',
     type: DataType.INTEGER,
   })
     priceRegular: number;
 
   @AllowNull(false)
   @Column({
+    field: 'price_discount',
     type: DataType.INTEGER,
   })
     priceDiscount: number;
 
   @AllowNull(false)
   @Column({
+    field: 'colors_available',
     type: DataType.ARRAY(DataType.STRING),
   })
     colorsAvailable: string[];
@@ -86,7 +89,7 @@ export class Phones extends Model {
   @Column({
     type: DataType.ARRAY(DataType.JSONB),
   })
-    description: string[];
+    description: Array<{ title: string, text: string[] }>;
 
   @AllowNull(false)
   @Column({

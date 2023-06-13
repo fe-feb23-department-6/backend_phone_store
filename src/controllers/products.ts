@@ -37,7 +37,18 @@ const getNewestProducts = async(req: Req, res: Res) => {
   }
 };
 
+const getHotPriceProducts = async(req: Req, res: Res) => {
+  try {
+    const hotPriceProducts = await productsService.getHotProducts();
+
+    res.send(hotPriceProducts);
+  } catch (error) {
+    res.status(500);
+  }
+};
+
 export const productsController = {
   getProducts,
   getNewestProducts,
+  getHotPriceProducts,
 };

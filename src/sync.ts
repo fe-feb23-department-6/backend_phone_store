@@ -48,12 +48,11 @@ const seedInitialProducts = async() => {
   }
 };
 
-const sync = async() => {
+export const sync = async() => {
   dbInit();
 
-  await Phones.sync({ alter: true });
-  await Products.sync({ alter: true });
-
+  await Phones.sync({ force: true });
+  await Products.sync({ force: true });
   await seedInitialPhones();
   await seedInitialProducts();
 };

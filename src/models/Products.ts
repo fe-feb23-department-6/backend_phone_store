@@ -1,6 +1,5 @@
 import {
   AllowNull,
-  AutoIncrement,
   BelongsTo,
   Column,
   DataType,
@@ -19,7 +18,6 @@ import { Phones } from './Phones';
 
 export class Products extends Model {
   @PrimaryKey
-  @AutoIncrement
   @AllowNull(false)
   @Column({
     type: DataType.STRING,
@@ -35,6 +33,7 @@ export class Products extends Model {
   @ForeignKey(() => Phones)
   @AllowNull(false)
   @Column({
+    field: 'phone_id',
     type: DataType.STRING,
   })
     phoneId: string;
@@ -44,6 +43,7 @@ export class Products extends Model {
 
   @AllowNull(false)
   @Column({
+    field: 'item_id',
     type: DataType.STRING,
   })
     itemId: string;
@@ -56,6 +56,7 @@ export class Products extends Model {
 
   @AllowNull(false)
   @Column({
+    field: 'full_price',
     type: DataType.INTEGER,
   })
     fullPrice: number;

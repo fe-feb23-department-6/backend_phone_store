@@ -4,6 +4,9 @@ import { SortType } from '../types/sortType';
 import { sortProducts } from '../utils/sortProducts';
 // import { getProductsWithUrl } from '../utils/getProductsWithUrl';
 import { filterProducts } from '../utils/filterProducts';
+// import { sequelize } from '../server';
+import { literal } from 'sequelize';
+// import sequelize from 'sequelize/types/sequelize';
 
 const getProductsWithPagination = async(
   pageNumber: number,
@@ -25,8 +28,6 @@ const getProductsWithPagination = async(
     });
 
     const totalPages = Math.ceil(products.count / limitNumber);
-
-    // const productsWithURL = getProductsWithUrl(products.rows);
 
     return {
       products: products.rows,
@@ -53,7 +54,21 @@ const getNewProducts = async() => {
   }
 };
 
+const getHotProducts = async() => {
+  try {
+    const hotPriceProducts = await Products.findAll({
+      order: literal('(full_price - price) DESC'),
+      limit: 10,
+    });
+
+    return hotPriceProducts;
+  } catch (error) {
+    throw new Error('Failed to get products');
+  }
+};
+
 export const productsService = {
   getProductsWithPagination,
   getNewProducts,
+  getHotProducts,
 };
