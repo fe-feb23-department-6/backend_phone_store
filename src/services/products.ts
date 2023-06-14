@@ -71,11 +71,16 @@ const getHotProducts = async() => {
   }
 };
 
-const getProductById = async(phoneId: string) => {
+const getProductsById = async(namespaceId: string) => {
   try {
-    const product = await Phones.findByPk(phoneId);
+    const products = await Phones.findAll({
+      where:
+      {
+        namespace_id: namespaceId,
+      },
+    });
 
-    return product;
+    return products;
   } catch (error) {
     throw new Error('Failed to get product');
   }
@@ -114,7 +119,7 @@ export const productsService = {
   getProductsWithPagination,
   getNewProducts,
   getHotProducts,
-  getProductById,
+  getProductsById,
   getRecommendedProducts,
   // getProductsByArrayID,
 };
