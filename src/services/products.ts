@@ -12,11 +12,16 @@ const getProductsWithPagination = async(
   limitNumber: number,
   sort: SortType,
   query?: SortType,
+  category?: string,
 ) => {
   const offset = (pageNumber - 1) * limitNumber;
   const sortOptions = sortProducts(sort);
 
   const whereConditions = query ? filterProducts(query) : {};
+
+  if (category) {
+    whereConditions.category = category;
+  }
 
   try {
     const products = await Products.findAndCountAll({

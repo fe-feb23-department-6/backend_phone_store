@@ -2,6 +2,12 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+Object.defineProperty(exports, "sync", {
+    enumerable: true,
+    get: function() {
+        return sync;
+    }
+});
 const _Phones = require("./models/Phones");
 const _Products = require("./models/Products");
 const _dbInit = require("./utils/dbInit");
@@ -41,10 +47,10 @@ const seedInitialProducts = async ()=>{
 const sync = async ()=>{
     (0, _dbInit.dbInit)();
     await _Phones.Phones.sync({
-        alter: true
+        force: true
     });
     await _Products.Products.sync({
-        alter: true
+        force: true
     });
     await seedInitialPhones();
     await seedInitialProducts();

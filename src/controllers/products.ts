@@ -1,12 +1,14 @@
-/* eslint-disable no-console */
 'use strict';
 import { Request as Req, Response as Res } from 'express';
 import { productsService } from '../services/products';
+import { getCategory } from '../utils/getCategory';
 
 const getProducts = async(req: Req, res: Res) => {
   const { page = '1', limit = '16', sort = 'newest', query } = req.query;
   const pageNumber = Number(page);
   const limitNumber = Number(limit);
+
+  const category = getCategory(req.path);
 
   try {
     const paginationData = await productsService.getProductsWithPagination(
@@ -14,9 +16,10 @@ const getProducts = async(req: Req, res: Res) => {
       limitNumber,
       sort,
       query,
+      category,
     );
 
-    if (paginationData.products.length === 0) {
+    if (!paginationData.products) {
       res.sendStatus(404);
 
       return;
