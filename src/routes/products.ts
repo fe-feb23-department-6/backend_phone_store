@@ -12,6 +12,4 @@ router.get('/accessories', productsController.getProducts);
 router.get('/new', productsController.getNewestProducts);
 router.get('/discount', productsController.getHotPriceProducts);
 router.get('/:namespaceId', productsController.getProductsById);
-router.get('/:id/recommended', productsController.getRecommendedProducts);
-// router.get('/cart', productsController.getAddedProducts);
-// router.get('/favorits', productsController.getAddedProducts);
+router.get('/:namespaceId/recommended', productsController.getRecommended);

@@ -1,11 +1,12 @@
 'use strict';
+import { sequelize } from '../server';
+import { literal } from 'sequelize';
 import { Products } from '../models/Products';
-import { SortType } from '../types/sortType';
+import { Phones } from '../models/Phones';
+import { SortType } from '../types/SortType';
+import { PaginationResult } from '../types/PaginationResult';
 import { sortProducts } from '../utils/sortProducts';
 import { filterProducts } from '../utils/filterProducts';
-import { literal } from 'sequelize';
-import { Phones } from '../models/Phones';
-import { sequelize } from '../server';
 
 const getProductsWithPagination = async(
   pageNumber: number,
@@ -13,15 +14,11 @@ const getProductsWithPagination = async(
   sort: SortType,
   query?: SortType,
   category?: string,
-) => {
+): Promise<PaginationResult> => {
   const offset = (pageNumber - 1) * limitNumber;
   const sortOptions = sortProducts(sort);
 
-  const whereConditions = query ? filterProducts(query) : {};
-
-  if (category) {
-    whereConditions.category = category;
-  }
+  const whereConditions = filterProducts(query, category) || {};
 
   try {
     const products = await Products.findAndCountAll({
@@ -43,7 +40,7 @@ const getProductsWithPagination = async(
   }
 };
 
-const getNewProducts = async() => {
+const getNewProducts = async(): Promise<Products[]> => {
   const sortOptions = sortProducts('newest');
 
   try {
@@ -58,7 +55,7 @@ const getNewProducts = async() => {
   }
 };
 
-const getHotProducts = async() => {
+const getHotProducts = async(): Promise<Products[]> => {
   try {
     const hotPriceProducts = await Products.findAll({
       order: literal('(full_price - price) DESC'),
@@ -71,11 +68,10 @@ const getHotProducts = async() => {
   }
 };
 
-const getProductsById = async(namespaceId: string) => {
+const getProductsById = async(namespaceId: string): Promise<Phones[]> => {
   try {
     const products = await Phones.findAll({
-      where:
-      {
+      where: {
         namespace_id: namespaceId,
       },
     });
@@ -86,7 +82,7 @@ const getProductsById = async(namespaceId: string) => {
   }
 };
 
-const getRecommendedProducts = async() => {
+const getRecommendedProducts = async(): Promise<Products[]> => {
   try {
     const recommendedProducts = await Products.findAll({
       order: sequelize?.random(),
@@ -99,27 +95,10 @@ const getRecommendedProducts = async() => {
   }
 };
 
-// const getProductsByArrayID = async(ids: string[]) => {
-//   try {
-//     const addedProducts = await Products.findAll({
-//       where: {
-//         phone_id: {
-//           [Op.in]: ids,
-//         },
-//       },
-//     });
-
-//     return addedProducts;
-//   } catch (error) {
-//     throw new Error('Failed to get products');
-//   }
-// };
-
 export const productsService = {
   getProductsWithPagination,
   getNewProducts,
   getHotProducts,
   getProductsById,
   getRecommendedProducts,
-  // getProductsByArrayID,
 };

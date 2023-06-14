@@ -8,19 +8,16 @@ Object.defineProperty(exports, "productsService", {
         return productsService;
     }
 });
+const _server = require("../server");
+const _sequelize = require("sequelize");
 const _Products = require("../models/Products");
+const _Phones = require("../models/Phones");
 const _sortProducts = require("../utils/sortProducts");
 const _filterProducts = require("../utils/filterProducts");
-const _sequelize = require("sequelize");
-const _Phones = require("../models/Phones");
-const _server = require("../server");
 const getProductsWithPagination = async (pageNumber, limitNumber, sort, query, category)=>{
     const offset = (pageNumber - 1) * limitNumber;
     const sortOptions = (0, _sortProducts.sortProducts)(sort);
-    const whereConditions = query ? (0, _filterProducts.filterProducts)(query) : {};
-    if (category) {
-        whereConditions.category = category;
-    }
+    const whereConditions = (0, _filterProducts.filterProducts)(query, category) || {};
     try {
         const products = await _Products.Products.findAndCountAll({
             where: whereConditions,
@@ -61,10 +58,14 @@ const getHotProducts = async ()=>{
         throw new Error('Failed to get products');
     }
 };
-const getProductById = async (phoneId)=>{
+const getProductsById = async (namespaceId)=>{
     try {
-        const product = await _Phones.Phones.findByPk(phoneId);
-        return product;
+        const products = await _Phones.Phones.findAll({
+            where: {
+                namespace_id: namespaceId
+            }
+        });
+        return products;
     } catch (error) {
         throw new Error('Failed to get product');
     }
@@ -84,6 +85,6 @@ const productsService = {
     getProductsWithPagination,
     getNewProducts,
     getHotProducts,
-    getProductById,
+    getProductsById,
     getRecommendedProducts
 };
