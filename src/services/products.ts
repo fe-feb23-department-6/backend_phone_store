@@ -34,6 +34,7 @@ const getProductsWithPagination = async(
       products: products.rows,
       currentPage: pageNumber,
       totalPages: totalPages,
+      totalCount: products.count,
     };
   } catch (error) {
     throw new Error('Failed to get products');

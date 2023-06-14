@@ -4,4 +4,5 @@ export type PaginationResult = {
   products: Products[];
   currentPage: number;
   totalPages: number;
+  totalCount: number;
 };
