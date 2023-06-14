@@ -55,7 +55,6 @@ let Phones = class Phones extends _sequelizetypescript.Model {
 };
 _ts_decorate([
     _sequelizetypescript.PrimaryKey,
-    _sequelizetypescript.AutoIncrement,
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({
         type: _sequelizetypescript.DataType.STRING
@@ -67,6 +66,7 @@ _ts_decorate([
 _ts_decorate([
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({
+        field: 'namespace_id',
         type: _sequelizetypescript.DataType.STRING
     })
 ], Phones.prototype, "namespaceId", void 0);
@@ -79,6 +79,7 @@ _ts_decorate([
 _ts_decorate([
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({
+        field: 'capacity_available',
         type: _sequelizetypescript.DataType.ARRAY(_sequelizetypescript.DataType.STRING)
     })
 ], Phones.prototype, "capacityAvailable", void 0);
@@ -91,18 +92,21 @@ _ts_decorate([
 _ts_decorate([
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({
+        field: 'price_regular',
         type: _sequelizetypescript.DataType.INTEGER
     })
 ], Phones.prototype, "priceRegular", void 0);
 _ts_decorate([
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({
+        field: 'price_discount',
         type: _sequelizetypescript.DataType.INTEGER
     })
 ], Phones.prototype, "priceDiscount", void 0);
 _ts_decorate([
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({
+        field: 'colors_available',
         type: _sequelizetypescript.DataType.ARRAY(_sequelizetypescript.DataType.STRING)
     })
 ], Phones.prototype, "colorsAvailable", void 0);

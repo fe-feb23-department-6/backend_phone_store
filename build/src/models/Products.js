@@ -50,7 +50,6 @@ let Products = class Products extends _sequelizetypescript.Model {
 };
 _ts_decorate([
     _sequelizetypescript.PrimaryKey,
-    _sequelizetypescript.AutoIncrement,
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({
         type: _sequelizetypescript.DataType.STRING
@@ -66,6 +65,7 @@ _ts_decorate([
     (0, _sequelizetypescript.ForeignKey)(()=>_Phones.Phones),
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({
+        field: 'phone_id',
         type: _sequelizetypescript.DataType.STRING
     })
 ], Products.prototype, "phoneId", void 0);
@@ -75,6 +75,7 @@ _ts_decorate([
 _ts_decorate([
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({
+        field: 'item_id',
         type: _sequelizetypescript.DataType.STRING
     })
 ], Products.prototype, "itemId", void 0);
@@ -87,6 +88,7 @@ _ts_decorate([
 _ts_decorate([
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({
+        field: 'full_price',
         type: _sequelizetypescript.DataType.INTEGER
     })
 ], Products.prototype, "fullPrice", void 0);

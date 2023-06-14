@@ -12,7 +12,7 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-dbInit();
+export const sequelize = dbInit();
 
 app.use(cors());
 
@@ -24,8 +24,6 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(imagesRouter);
 
 app.use('/products', express.json(), productsRouter);
-// app.use('/discount', express.json(), hotRouter);
-// app.use('/recommended', express.json(), relatedRouter);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
