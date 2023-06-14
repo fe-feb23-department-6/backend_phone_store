@@ -89,10 +89,27 @@ const getRecommendedProducts = async() => {
   }
 };
 
+// const getProductsByArrayID = async(ids: string[]) => {
+//   try {
+//     const addedProducts = await Products.findAll({
+//       where: {
+//         phone_id: {
+//           [Op.in]: ids,
+//         },
+//       },
+//     });
+
+//     return addedProducts;
+//   } catch (error) {
+//     throw new Error('Failed to get products');
+//   }
+// };
+
 export const productsService = {
   getProductsWithPagination,
   getNewProducts,
   getHotProducts,
   getProductById,
   getRecommendedProducts,
+  // getProductsByArrayID,
 };

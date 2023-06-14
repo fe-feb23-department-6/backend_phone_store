@@ -76,10 +76,26 @@ const getRecommendedProducts = async(req: Req, res: Res) => {
   }
 };
 
+// const getAddedProducts = async(req: Req, res: Res) => {
+//   const { productsIds } = req.body;
+
+//   console.log('ПРОВЕРКА ID+++++', req.body);
+
+//   try {
+// eslint-disable-next-line max-len
+//     const addedProducts = await productsService.getProductsByArrayID(productsIds);
+
+//     res.send(addedProducts);
+//   } catch (error) {
+//     res.status(500);
+//   }
+// };
+
 export const productsController = {
   getProducts,
   getNewestProducts,
   getHotPriceProducts,
   getProductById,
   getRecommendedProducts,
+  // getAddedProducts,
 };
