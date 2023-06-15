@@ -15,18 +15,19 @@ const _products = require("./routes/products");
 const _customList = require("./routes/customList");
 const _images = require("./routes/images");
 const _express = /*#__PURE__*/ _interop_require_default(require("express"));
+const _swaggeruiexpress = /*#__PURE__*/ _interop_require_default(require("swagger-ui-express"));
+const _product_catalogjson = /*#__PURE__*/ _interop_require_default(require("./product_catalog.json"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
     };
 }
+// const swaggerDocument = require('../public/product_catalog.json');
 const app = (0, _express.default)();
 const PORT = process.env.PORT || 3000;
 const sequelize = (0, _dbInit.dbInit)();
 app.use((0, _cors.default)());
-app.get('/', (req, res)=>{
-    res.send('Server is working.');
-});
+app.use('/', _swaggeruiexpress.default.serve, _swaggeruiexpress.default.setup(_product_catalogjson.default));
 app.use('/public', _express.default.static(_path.default.join(__dirname, 'public')));
 app.use(_images.router);
 app.use('/products', _express.default.json(), _products.router);
