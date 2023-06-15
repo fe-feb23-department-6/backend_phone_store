@@ -17,7 +17,14 @@ const PORT = process.env.PORT || 3000;
 export const sequelize = dbInit();
 
 app.use(cors());
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.get('/', (req, res, next) => {
+  if (req.url === '/') {
+    return res.redirect('/docs');
+  }
+  next();
+});
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(imagesRouter);

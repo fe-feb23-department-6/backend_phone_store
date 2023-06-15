@@ -22,12 +22,17 @@ function _interop_require_default(obj) {
         default: obj
     };
 }
-// const swaggerDocument = require('../public/product_catalog.json');
 const app = (0, _express.default)();
 const PORT = process.env.PORT || 3000;
 const sequelize = (0, _dbInit.dbInit)();
 app.use((0, _cors.default)());
-app.use('/', _swaggeruiexpress.default.serve, _swaggeruiexpress.default.setup(_product_catalogjson.default));
+app.get('/', (req, res, next)=>{
+    if (req.url === '/') {
+        return res.redirect('/docs');
+    }
+    next();
+});
+app.use('/docs', _swaggeruiexpress.default.serve, _swaggeruiexpress.default.setup(_product_catalogjson.default));
 app.use('/public', _express.default.static(_path.default.join(__dirname, 'public')));
 app.use(_images.router);
 app.use('/products', _express.default.json(), _products.router);
