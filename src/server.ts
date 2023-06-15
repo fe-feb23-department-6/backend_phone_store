@@ -11,8 +11,6 @@ import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './product_catalog.json';
 
-// const swaggerDocument = require('../public/product_catalog.json');
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
