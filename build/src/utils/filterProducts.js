@@ -9,10 +9,15 @@ Object.defineProperty(exports, "filterProducts", {
     }
 });
 const _sequelize = require("sequelize");
-const filterProducts = (query)=>{
+const filterProducts = (query, category)=>{
     const whereConditions = {};
-    whereConditions.name = {
-        [_sequelize.Op.iLike]: `%${query}%`
-    };
+    if (query) {
+        whereConditions.name = {
+            [_sequelize.Op.iLike]: `%${query}%`
+        };
+    }
+    if (category) {
+        whereConditions.category = category;
+    }
     return whereConditions;
 };

@@ -23,50 +23,62 @@ const getProducts = async (req, res)=>{
         }
         res.json(paginationData);
     } catch (error) {
-        res.status(500);
+        res.sendStatus(500);
     }
 };
 const getNewestProducts = async (req, res)=>{
     try {
         const newProducts = await _products.productsService.getNewProducts();
+        if (!newProducts) {
+            res.sendStatus(404);
+            return;
+        }
         res.send(newProducts);
     } catch (error) {
-        res.status(500);
+        res.sendStatus(500);
     }
 };
 const getHotPriceProducts = async (req, res)=>{
     try {
         const hotPriceProducts = await _products.productsService.getHotProducts();
-        res.send(hotPriceProducts);
-    } catch (error) {
-        res.status(500);
-    }
-};
-const getProductById = async (req, res)=>{
-    const { id  } = req.params;
-    try {
-        const product = await _products.productsService.getProductById(id);
-        if (!product) {
+        if (!hotPriceProducts) {
             res.sendStatus(404);
             return;
         }
-        res.send(product);
+        res.send(hotPriceProducts);
     } catch (error) {
-        res.status(500);
+        res.sendStatus(500);
     }
 };
-const getRecommendedProducts = async (req, res)=>{
+const getProductsById = async (req, res)=>{
+    const { namespaceId  } = req.params;
+    try {
+        const products = await _products.productsService.getProductsById(namespaceId);
+        if (!products) {
+            res.sendStatus(404);
+            return;
+        }
+        res.send(products);
+    } catch (error) {
+        res.sendStatus(500);
+    }
+};
+const getRecommended = async (req, res)=>{
     try {
         const recommendedProducts = await _products.productsService.getRecommendedProducts();
+        if (!recommendedProducts) {
+            res.sendStatus(404);
+            return;
+        }
         res.send(recommendedProducts);
     } catch (error) {
-        res.status(500);
+        res.sendStatus(500);
     }
 };
 const productsController = {
     getProducts,
     getNewestProducts,
     getHotPriceProducts,
-    getProductById,
-    getRecommendedProducts
+    getProductsById,
+    getRecommended
 };

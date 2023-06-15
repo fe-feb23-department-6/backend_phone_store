@@ -22,6 +22,5 @@ router.get('/tablets', _products.productsController.getProducts);
 router.get('/accessories', _products.productsController.getProducts);
 router.get('/new', _products.productsController.getNewestProducts);
 router.get('/discount', _products.productsController.getHotPriceProducts);
-router.get('/:id', _products.productsController.getProductById);
-router.get('/:id/recommended', _products.productsController.getRecommendedProducts); // router.get('/cart', productsController.getAddedProducts);
- // router.get('/favorits', productsController.getAddedProducts);
+router.get('/:namespaceId', _products.productsController.getProductsById);
+router.get('/:namespaceId/recommended', _products.productsController.getRecommended);

@@ -1,5 +1,7 @@
+'use strict';
+
 import { Order } from 'sequelize';
-import { SortType } from '../types/sortType';
+import { SortType } from '../types/SortType';
 
 export const sortProducts = (sort: SortType) => {
   let sortOptions: Order = [['year', 'DESC']];
@@ -15,6 +17,10 @@ export const sortProducts = (sort: SortType) => {
 
     case 'abc':
       sortOptions = [['name', 'ASC']];
+      break;
+
+    case 'zyx':
+      sortOptions = [['name', 'DESC']];
       break;
 
     case 'newest':

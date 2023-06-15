@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -37,6 +37,14 @@ const sortProducts = (sort)=>{
                 [
                     'name',
                     'ASC'
+                ]
+            ];
+            break;
+        case 'zyx':
+            sortOptions = [
+                [
+                    'name',
+                    'DESC'
                 ]
             ];
             break;
