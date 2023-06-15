@@ -1,0 +1,718 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Product catalog API",
+    "version": "1.0.11"
+  },
+  "servers": [
+    {
+      "url": "https://backend-phone-store.onrender.com/"
+    }
+  ],
+  "paths": {
+    "/products": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "description": "Get the list of products",
+        "operationId": "getProducts",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": 16,
+              "enum": [
+                16,
+                32
+              ]
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": "newest",
+              "enum": [
+                "newest",
+                "cheapest",
+                "expensive",
+                "abc",
+                "zyx"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Products"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/products/phones": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "description": "Get the list of products",
+        "operationId": "getPhones",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": 16,
+              "enum": [
+                16,
+                32
+              ]
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": "newest",
+              "enum": [
+                "newest",
+                "cheapest",
+                "expensive",
+                "abc",
+                "zyx"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Products"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/products/tablets": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "description": "Get the list of products",
+        "operationId": "getTablets",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": 16,
+              "enum": [
+                16,
+                32
+              ]
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": "newest",
+              "enum": [
+                "newest",
+                "cheapest",
+                "expensive",
+                "abc",
+                "zyx"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Products"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/products/accessories": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "description": "Get the list of products",
+        "operationId": "getAccessories",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": 16,
+              "enum": [
+                16,
+                32
+              ]
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": "newest",
+              "enum": [
+                "newest",
+                "cheapest",
+                "expensive",
+                "abc",
+                "zyx"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Products"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/products/new": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "description": "Get the list of brand new products",
+        "operationId": "getNewProducts",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Products"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/products/discount": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "description": "Get the list products with the biggest discount",
+        "operationId": "getDiscount",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Products"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/products/{namespaceId}": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "description": "Get the list of products by namespaceId",
+        "operationId": "getByNamespaceId",
+        "parameters": [
+          {
+            "name": "namespaceId",
+            "in": "path",
+            "description": "namespaceId of products to return",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "varchar"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phones"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/products/{namespaceId}/recommended": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "description": "Get the list of list of similar products",
+        "operationId": "getByNamespaceIdRecommended",
+        "parameters": [
+          {
+            "name": "namespaceId",
+            "in": "path",
+            "description": "namespaceId of products",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "varchar"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phones"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/cart": {
+      "get": {
+        "tags": [
+          "cart"
+        ],
+        "description": "Get the list of products added to cart",
+        "operationId": "getCart",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "phoneIds",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phones"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/favorites": {
+      "get": {
+        "tags": [
+          "favorites"
+        ],
+        "description": "Get the list of favorites products",
+        "operationId": "getFavorites",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "phoneIds",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phones"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "varchar",
+            "example": 1
+          },
+          "category": {
+            "type": "string",
+            "format": "varchar",
+            "example": "phones"
+          },
+          "phone_id": {
+            "type": "string",
+            "format": "varchar",
+            "example": "apple-iphone-7-32gb-black"
+          },
+          "item_id": {
+            "type": "string",
+            "format": "varchar",
+            "example": "apple-iphone-7-32gb-black"
+          },
+          "name": {
+            "type": "string",
+            "format": "varchar",
+            "example": "Apple iPhone 7 32GB Black"
+          },
+          "full_price": {
+            "type": "integer",
+            "format": "int4",
+            "example": 400
+          },
+          "price": {
+            "type": "integer",
+            "format": "int4",
+            "example": 350
+          },
+          "screen": {
+            "type": "string",
+            "format": "varchar",
+            "example": "4.7' IPS"
+          },
+          "capacity": {
+            "type": "string",
+            "format": "varchar",
+            "example": "32GB"
+          },
+          "color": {
+            "type": "string",
+            "format": "varchar",
+            "example": "black"
+          },
+          "ram": {
+            "type": "string",
+            "format": "varchar",
+            "example": "2GB"
+          },
+          "year": {
+            "type": "integer",
+            "format": "int4",
+            "example": 2016
+          },
+          "image": {
+            "type": "string",
+            "format": "varchar",
+            "example": "img/phones/apple-iphone-7/black/00.jpg"
+          }
+        }
+      },
+      "Products": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Product"
+        }
+      },
+      "Phone": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "varchar",
+            "example": "apple-iphone-11-128gb-black"
+          },
+          "namespace_id": {
+            "type": "string",
+            "format": "varchar",
+            "example": "apple-iphone-11"
+          },
+          "name": {
+            "type": "string",
+            "format": "varchar",
+            "example": "Apple iPhone 11 128GB Black"
+          },
+          "capacity_available": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "64GB",
+              "128GB",
+              "256GB"
+            ]
+          },
+          "capacity": {
+            "type": "string",
+            "format": "varchar",
+            "example": "128GB"
+          },
+          "price_regular": {
+            "type": "integer",
+            "format": "int4",
+            "example": 1100
+          },
+          "price_discount": {
+            "type": "integer",
+            "format": "int4",
+            "example": 1050
+          },
+          "colors_available": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "black",
+              "green",
+              "yellow",
+              "white",
+              "purple",
+              "red"
+            ]
+          },
+          "color": {
+            "type": "string",
+            "format": "varchar",
+            "example": "black"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "img/phones/apple-iphone-11/black/00.jpg",
+              "img/phones/apple-iphone-11/black/01.jpg"
+            ]
+          },
+          "description": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "format": "varchar"
+                },
+                "text": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "screen": {
+            "type": "string",
+            "format": "varchar",
+            "example": "6.1' IPS"
+          },
+          "resolution": {
+            "type": "string",
+            "format": "varchar",
+            "example": "1792x828"
+          },
+          "processor": {
+            "type": "string",
+            "format": "varchar",
+            "example": "Apple A13 Bionic"
+          },
+          "ram": {
+            "type": "string",
+            "format": "varchar",
+            "example": "4GB"
+          },
+          "camera": {
+            "type": "string",
+            "format": "varchar",
+            "example": "12 Mp + 12 Mp + 12MP"
+          },
+          "zoom": {
+            "type": "string",
+            "format": "varchar",
+            "example": "Digital, 5x"
+          },
+          "cell": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "GPRS",
+              "EDGE",
+              "WCDMA",
+              "UMTS",
+              "HSPA",
+              "LTE"
+            ]
+          }
+        }
+      },
+      "Phones": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Phone"
+        }
+      },
+      "PhoneIdsRequest": {
+        "type": "object",
+        "properties": {
+          "phoneIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "varchar",
+              "example": "apple-iphone-7-32gb-black"
+            }
+          }
+        }
+      }
+    }
+  }
+}

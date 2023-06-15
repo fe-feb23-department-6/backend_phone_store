@@ -7,7 +7,9 @@ import path from 'path';
 import { router as productsRouter } from './routes/products';
 import { router as customListRouter } from './routes/customList';
 import { router as imagesRouter } from './routes/images';
-import express, { Request as Req, Response as Res } from 'express';
+import express from 'express';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './product_catalog.json';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,9 +18,13 @@ export const sequelize = dbInit();
 
 app.use(cors());
 
-app.get('/', (req: Req, res: Res) => {
-  res.send('Server is working.');
+app.get('/', (req, res, next) => {
+  if (req.url === '/') {
+    return res.redirect('/docs');
+  }
+  next();
 });
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(imagesRouter);
