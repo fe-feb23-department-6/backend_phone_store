@@ -1,34 +1,15 @@
-# backend_phone_store
+# Product catalog REST API
 
-To run server write `npm run dev` in terminal
+This is a REST API server for a household appliances store, implemented using Node.js, Express, Typescript and Sequelize. The server provides endpoints for managing various aspects of the store's inventory and customer information.
 
-## Get /products
+## Getting Started
 
-Returns an array of items products
+To run the server locally, use the following command:
 
-> Full array look [here](https://github.com/mate-academy/product_catalog/blob/main/public/api/phones.json)
+`npm run dev`
 
-```json
-  {
-    "id": "1",
-    "category": "phones",
-    "phoneId": "apple-iphone-7-32gb-black",
-    "itemId": "apple-iphone-7-32gb-black",
-    "name": "Apple iPhone 7 32GB Black",
-    "fullPrice": 400,
-    "price": 375,
-    "screen": "4.7' IPS",
-    "capacity": "32GB",
-    "color": "black",
-    "ram": "2GB",
-    "year": 2016,
-    "image": "img/phones/apple-iphone-7/black/00.jpg"
-  },
-  ```
-  ## Get /path to image
+## Documentation
 
-  Use path to image in `public` forlder 
+For detailed information on the API endpoints and their usage, please refer to the [documentation](https://backend-phone-store.onrender.com/).
 
-  Example: `img/phones/apple-iphone-7/black/00.jpg`
-
-  > img folder [here](https://github.com/mate-academy/product_catalog/tree/main/public/img)
+Feel free to explore the API and test its functionality.
