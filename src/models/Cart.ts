@@ -4,21 +4,20 @@ import {
   BelongsTo,
   Column, DataType,
   ForeignKey,
-  HasMany,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
 import { Users } from './Users';
-import { OrderDetails } from './OrderDetails';
+import { Phones } from './Phones';
 
 @Table({
-  tableName: 'orders',
+  tableName: 'cart',
   createdAt: true,
   updatedAt: false,
 })
 
-export class Orders extends Model {
+export class Cart extends Model {
   @PrimaryKey
   @AutoIncrement
   @AllowNull(false)
@@ -27,11 +26,8 @@ export class Orders extends Model {
   })
     id: number;
 
-  @HasMany(() => OrderDetails)
-    order_detail: OrderDetails;
-
   @ForeignKey(() => Users)
-  @AllowNull(true)
+  @AllowNull(false)
   @Column({
     type: DataType.INTEGER,
   })
@@ -39,4 +35,20 @@ export class Orders extends Model {
 
   @BelongsTo(() => Users)
     user: Users | null;
+
+  @ForeignKey(() => Phones)
+  @AllowNull(false)
+  @Column({
+    type: DataType.STRING,
+  })
+    phone_id: string;
+
+  @BelongsTo(() => Phones)
+    phone: Phones;
+
+  @AllowNull(false)
+  @Column({
+    type: DataType.INTEGER,
+  })
+    quantity: number;
 }

@@ -2,15 +2,15 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-Object.defineProperty(exports, "Orders", {
+Object.defineProperty(exports, "Cart", {
     enumerable: true,
     get: function() {
-        return Orders;
+        return Cart;
     }
 });
 const _sequelizetypescript = require("sequelize-typescript");
 const _Users = require("./Users");
-const _OrderDetails = require("./OrderDetails");
+const _Phones = require("./Phones");
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {
@@ -30,13 +30,15 @@ function _ts_decorate(decorators, target, key, desc) {
     else for(var i = decorators.length - 1; i >= 0; i--)if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 }
-let Orders = class Orders extends _sequelizetypescript.Model {
+let Cart = class Cart extends _sequelizetypescript.Model {
     constructor(...args){
         super(...args);
         _define_property(this, "id", void 0);
-        _define_property(this, "order_detail", void 0);
         _define_property(this, "user_id", void 0);
         _define_property(this, "user", void 0);
+        _define_property(this, "phone_id", void 0);
+        _define_property(this, "phone", void 0);
+        _define_property(this, "quantity", void 0);
     }
 };
 _ts_decorate([
@@ -46,24 +48,37 @@ _ts_decorate([
     (0, _sequelizetypescript.Column)({
         type: _sequelizetypescript.DataType.INTEGER
     })
-], Orders.prototype, "id", void 0);
-_ts_decorate([
-    (0, _sequelizetypescript.HasMany)(()=>_OrderDetails.OrderDetails)
-], Orders.prototype, "order_detail", void 0);
+], Cart.prototype, "id", void 0);
 _ts_decorate([
     (0, _sequelizetypescript.ForeignKey)(()=>_Users.Users),
-    (0, _sequelizetypescript.AllowNull)(true),
+    (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({
         type: _sequelizetypescript.DataType.INTEGER
     })
-], Orders.prototype, "user_id", void 0);
+], Cart.prototype, "user_id", void 0);
 _ts_decorate([
     (0, _sequelizetypescript.BelongsTo)(()=>_Users.Users)
-], Orders.prototype, "user", void 0);
-Orders = _ts_decorate([
+], Cart.prototype, "user", void 0);
+_ts_decorate([
+    (0, _sequelizetypescript.ForeignKey)(()=>_Phones.Phones),
+    (0, _sequelizetypescript.AllowNull)(false),
+    (0, _sequelizetypescript.Column)({
+        type: _sequelizetypescript.DataType.STRING
+    })
+], Cart.prototype, "phone_id", void 0);
+_ts_decorate([
+    (0, _sequelizetypescript.BelongsTo)(()=>_Phones.Phones)
+], Cart.prototype, "phone", void 0);
+_ts_decorate([
+    (0, _sequelizetypescript.AllowNull)(false),
+    (0, _sequelizetypescript.Column)({
+        type: _sequelizetypescript.DataType.INTEGER
+    })
+], Cart.prototype, "quantity", void 0);
+Cart = _ts_decorate([
     (0, _sequelizetypescript.Table)({
-        tableName: 'orders',
+        tableName: 'cart',
         createdAt: true,
         updatedAt: false
     })
-], Orders);
+], Cart);

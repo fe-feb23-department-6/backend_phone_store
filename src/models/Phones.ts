@@ -2,12 +2,16 @@ import {
   AllowNull,
   Column,
   DataType,
+  HasMany,
   HasOne,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
 import { Products } from './Products';
+import { OrderDetails } from './OrderDetails';
+import { Favorites } from './Favorites';
+import { Cart } from './Cart';
 
 @Table({
   tableName: 'phones',
@@ -25,6 +29,15 @@ export class Phones extends Model {
 
   @HasOne(() => Products)
     products: Products;
+
+  @HasMany(() => OrderDetails)
+    order_detail: OrderDetails;
+
+  @HasMany(() => Favorites)
+    favorite: Favorites;
+
+  @HasMany(() => Cart)
+    cart: Cart;
 
   @AllowNull(false)
   @Column({
