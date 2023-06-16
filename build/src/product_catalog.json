@@ -411,10 +411,8 @@
             "name": "phoneIds",
             "required": true,
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+              "type": "string",
+              "description": "Comma-separated phone IDs"
             }
           }
         ],
@@ -424,7 +422,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Phones"
+                  "$ref": "#/components/schemas/Products"
                 }
               }
             }
@@ -451,10 +449,8 @@
             "name": "phoneIds",
             "required": true,
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+              "type": "string",
+              "description": "Comma-separated phone IDs"
             }
           }
         ],
@@ -464,7 +460,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Phones"
+                  "$ref": "#/components/schemas/Products"
                 }
               }
             }
