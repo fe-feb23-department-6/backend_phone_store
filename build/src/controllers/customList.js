@@ -21,9 +21,7 @@ const getProductsByIds = async (req, res)=>{
             res.sendStatus(404);
             return;
         }
-        res.json({
-            products
-        });
+        res.json(products);
     } catch (error) {
         res.sendStatus(500);
     }

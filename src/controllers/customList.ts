@@ -22,7 +22,7 @@ const getProductsByIds = async(req: Req, res: Res) => {
       return;
     }
 
-    res.json({ products });
+    res.json(products);
   } catch (error) {
     res.sendStatus(500);
   }
