@@ -3,9 +3,11 @@ import { Request as Req, Response as Res } from 'express';
 import { customListService } from '../services/customList';
 
 const getProductsByIds = async(req: Req, res: Res) => {
-  const { phoneIds } = req.body;
+  const phoneIds = typeof req.query.phoneIds === 'string'
+    ? req.query.phoneIds.split(',')
+    : [];
 
-  if (!phoneIds || !Array.isArray(phoneIds) || phoneIds.length === 0) {
+  if (phoneIds.length === 0) {
     res.sendStatus(400);
 
     return;
