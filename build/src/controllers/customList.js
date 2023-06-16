@@ -10,8 +10,8 @@ Object.defineProperty(exports, "customListController", {
 });
 const _customList = require("../services/customList");
 const getProductsByIds = async (req, res)=>{
-    const { phoneIds  } = req.body;
-    if (!phoneIds || !Array.isArray(phoneIds) || phoneIds.length === 0) {
+    const phoneIds = typeof req.query.phoneIds === 'string' ? req.query.phoneIds.split(',') : [];
+    if (phoneIds.length === 0) {
         res.sendStatus(400);
         return;
     }
