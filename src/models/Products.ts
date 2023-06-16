@@ -4,11 +4,15 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
 import { Phones } from './Phones';
+import { OrderDetails } from './OrderDetails';
+import { Cart } from './Cart';
+import { Favorites } from './Favorites';
 
 @Table({
   tableName: 'products',
@@ -23,6 +27,15 @@ export class Products extends Model {
     type: DataType.STRING,
   })
     id: string;
+
+  @HasMany(() => OrderDetails)
+    order_details: OrderDetails;
+
+  @HasMany(() => Cart)
+    cart: Cart;
+
+  @HasMany(() => Favorites)
+    favorite: Favorites;
 
   @AllowNull(false)
   @Column({

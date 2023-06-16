@@ -10,7 +10,7 @@ Object.defineProperty(exports, "Favorites", {
 });
 const _sequelizetypescript = require("sequelize-typescript");
 const _Users = require("./Users");
-const _Phones = require("./Phones");
+const _Products = require("./Products");
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {
@@ -36,8 +36,8 @@ let Favorites = class Favorites extends _sequelizetypescript.Model {
         _define_property(this, "id", void 0);
         _define_property(this, "user_id", void 0);
         _define_property(this, "user", void 0);
-        _define_property(this, "phone_id", void 0);
-        _define_property(this, "phone", void 0);
+        _define_property(this, "producrts_id", void 0);
+        _define_property(this, "producrt", void 0);
     }
 };
 _ts_decorate([
@@ -59,15 +59,15 @@ _ts_decorate([
     (0, _sequelizetypescript.BelongsTo)(()=>_Users.Users)
 ], Favorites.prototype, "user", void 0);
 _ts_decorate([
-    (0, _sequelizetypescript.ForeignKey)(()=>_Phones.Phones),
+    (0, _sequelizetypescript.ForeignKey)(()=>_Products.Products),
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({
         type: _sequelizetypescript.DataType.STRING
     })
-], Favorites.prototype, "phone_id", void 0);
+], Favorites.prototype, "producrts_id", void 0);
 _ts_decorate([
-    (0, _sequelizetypescript.BelongsTo)(()=>_Phones.Phones)
-], Favorites.prototype, "phone", void 0);
+    (0, _sequelizetypescript.BelongsTo)(()=>_Products.Products)
+], Favorites.prototype, "producrt", void 0);
 Favorites = _ts_decorate([
     (0, _sequelizetypescript.Table)({
         tableName: 'favorites',

@@ -10,7 +10,7 @@ Object.defineProperty(exports, "Cart", {
 });
 const _sequelizetypescript = require("sequelize-typescript");
 const _Users = require("./Users");
-const _Phones = require("./Phones");
+const _Products = require("./Products");
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {
@@ -36,8 +36,8 @@ let Cart = class Cart extends _sequelizetypescript.Model {
         _define_property(this, "id", void 0);
         _define_property(this, "user_id", void 0);
         _define_property(this, "user", void 0);
-        _define_property(this, "phone_id", void 0);
-        _define_property(this, "phone", void 0);
+        _define_property(this, "products_id", void 0);
+        _define_property(this, "product", void 0);
         _define_property(this, "quantity", void 0);
     }
 };
@@ -60,15 +60,15 @@ _ts_decorate([
     (0, _sequelizetypescript.BelongsTo)(()=>_Users.Users)
 ], Cart.prototype, "user", void 0);
 _ts_decorate([
-    (0, _sequelizetypescript.ForeignKey)(()=>_Phones.Phones),
+    (0, _sequelizetypescript.ForeignKey)(()=>_Products.Products),
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({
         type: _sequelizetypescript.DataType.STRING
     })
-], Cart.prototype, "phone_id", void 0);
+], Cart.prototype, "products_id", void 0);
 _ts_decorate([
-    (0, _sequelizetypescript.BelongsTo)(()=>_Phones.Phones)
-], Cart.prototype, "phone", void 0);
+    (0, _sequelizetypescript.BelongsTo)(()=>_Products.Products)
+], Cart.prototype, "product", void 0);
 _ts_decorate([
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({

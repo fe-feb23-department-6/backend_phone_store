@@ -9,7 +9,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 import { Orders } from './Orders';
-import { Phones } from './Phones';
+import { Products } from './Products';
 
 @Table({
   tableName: 'order_details',
@@ -36,15 +36,15 @@ export class OrderDetails extends Model {
   @BelongsTo(() => Orders)
     order: Orders | null;
 
-  @ForeignKey(() => Phones)
+  @ForeignKey(() => Products)
   @AllowNull(false)
   @Column({
     type: DataType.STRING,
   })
-    phone_id: string;
+    products_id: string;
 
-  @BelongsTo(() => Phones)
-    phone: Phones;
+  @BelongsTo(() => Products)
+    product: Products;
 
   @AllowNull(false)
   @Column({
