@@ -14,6 +14,7 @@ const _path = /*#__PURE__*/ _interop_require_default(require("path"));
 const _products = require("./routes/products");
 const _customList = require("./routes/customList");
 const _images = require("./routes/images");
+const _users = require("./routes/users");
 const _express = /*#__PURE__*/ _interop_require_default(require("express"));
 const _swaggeruiexpress = /*#__PURE__*/ _interop_require_default(require("swagger-ui-express"));
 const _product_catalogjson = /*#__PURE__*/ _interop_require_default(require("./product_catalog.json"));
@@ -38,6 +39,7 @@ app.use(_images.router);
 app.use('/products', _express.default.json(), _products.router);
 app.use('/cart', _express.default.json(), _customList.router);
 app.use('/favorites', _express.default.json(), _customList.router);
+app.use('/users', _express.default.json(), _users.router);
 app.listen(PORT, ()=>{
     console.log(`server is working on http://localhost:${PORT}`);
 });
