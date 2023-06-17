@@ -8,9 +8,19 @@ Object.defineProperty(exports, "models", {
         return models;
     }
 });
+const _Cart = require("./Cart");
+const _Favorites = require("./Favorites");
+const _OrderDetails = require("./OrderDetails");
+const _Orders = require("./Orders");
 const _Phones = require("./Phones");
 const _Products = require("./Products");
+const _Users = require("./Users");
 const models = [
+    _Cart.Cart,
+    _Favorites.Favorites,
+    _OrderDetails.OrderDetails,
+    _Orders.Orders,
+    _Users.Users,
     _Products.Products,
     _Phones.Phones
 ];

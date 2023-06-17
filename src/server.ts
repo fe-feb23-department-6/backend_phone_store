@@ -7,6 +7,7 @@ import path from 'path';
 import { router as productsRouter } from './routes/products';
 import { router as customListRouter } from './routes/customList';
 import { router as imagesRouter } from './routes/images';
+import { router as usersRouter } from './routes/users';
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './product_catalog.json';
@@ -32,6 +33,7 @@ app.use(imagesRouter);
 app.use('/products', express.json(), productsRouter);
 app.use('/cart', express.json(), customListRouter);
 app.use('/favorites', express.json(), customListRouter);
+app.use('/users', express.json(), usersRouter);
 
 app.listen(PORT, () => {
   console.log(`server is working on http://localhost:${PORT}`);

@@ -10,6 +10,9 @@ Object.defineProperty(exports, "Phones", {
 });
 const _sequelizetypescript = require("sequelize-typescript");
 const _Products = require("./Products");
+const _OrderDetails = require("./OrderDetails");
+const _Favorites = require("./Favorites");
+const _Cart = require("./Cart");
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {
@@ -34,6 +37,9 @@ let Phones = class Phones extends _sequelizetypescript.Model {
         super(...args);
         _define_property(this, "id", void 0);
         _define_property(this, "products", void 0);
+        _define_property(this, "order_detail", void 0);
+        _define_property(this, "favorite", void 0);
+        _define_property(this, "cart", void 0);
         _define_property(this, "namespaceId", void 0);
         _define_property(this, "name", void 0);
         _define_property(this, "capacityAvailable", void 0);
@@ -63,6 +69,15 @@ _ts_decorate([
 _ts_decorate([
     (0, _sequelizetypescript.HasOne)(()=>_Products.Products)
 ], Phones.prototype, "products", void 0);
+_ts_decorate([
+    (0, _sequelizetypescript.HasMany)(()=>_OrderDetails.OrderDetails)
+], Phones.prototype, "order_detail", void 0);
+_ts_decorate([
+    (0, _sequelizetypescript.HasMany)(()=>_Favorites.Favorites)
+], Phones.prototype, "favorite", void 0);
+_ts_decorate([
+    (0, _sequelizetypescript.HasMany)(()=>_Cart.Cart)
+], Phones.prototype, "cart", void 0);
 _ts_decorate([
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({

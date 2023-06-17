@@ -1,23 +1,23 @@
 import {
   AllowNull,
   AutoIncrement,
+  BelongsTo,
   Column, DataType,
-  HasMany,
+  ForeignKey,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { Orders } from './Orders';
-import { Favorites } from './Favorites';
-import { Cart } from './Cart';
+import { Users } from './Users';
+import { Phones } from './Phones';
 
 @Table({
-  tableName: 'users',
+  tableName: 'favorites',
   createdAt: true,
   updatedAt: false,
 })
 
-export class Users extends Model {
+export class Favorites extends Model {
   @PrimaryKey
   @AutoIncrement
   @AllowNull(false)
@@ -26,24 +26,23 @@ export class Users extends Model {
   })
     id: number;
 
-  @HasMany(() => Orders)
-    order: Orders;
+  @ForeignKey(() => Users)
+  @AllowNull(false)
+  @Column({
+    type: DataType.INTEGER,
+  })
+    user_id: number;
 
-  @HasMany(() => Favorites)
-    favorite: Favorites;
+  @BelongsTo(() => Users)
+    user: Users | null;
 
-  @HasMany(() => Cart)
-    cart: Cart;
-
+  @ForeignKey(() => Phones)
   @AllowNull(false)
   @Column({
     type: DataType.STRING,
   })
-    name: string;
+    phone_id: string;
 
-  @AllowNull(false)
-  @Column({
-    type: DataType.STRING,
-  })
-    email: string;
+  @BelongsTo(() => Phones)
+    phone: Phones;
 }

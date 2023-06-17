@@ -10,6 +10,8 @@ Object.defineProperty(exports, "Users", {
 });
 const _sequelizetypescript = require("sequelize-typescript");
 const _Orders = require("./Orders");
+const _Favorites = require("./Favorites");
+const _Cart = require("./Cart");
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {
@@ -34,6 +36,8 @@ let Users = class Users extends _sequelizetypescript.Model {
         super(...args);
         _define_property(this, "id", void 0);
         _define_property(this, "order", void 0);
+        _define_property(this, "favorite", void 0);
+        _define_property(this, "cart", void 0);
         _define_property(this, "name", void 0);
         _define_property(this, "email", void 0);
     }
@@ -49,6 +53,12 @@ _ts_decorate([
 _ts_decorate([
     (0, _sequelizetypescript.HasMany)(()=>_Orders.Orders)
 ], Users.prototype, "order", void 0);
+_ts_decorate([
+    (0, _sequelizetypescript.HasMany)(()=>_Favorites.Favorites)
+], Users.prototype, "favorite", void 0);
+_ts_decorate([
+    (0, _sequelizetypescript.HasMany)(()=>_Cart.Cart)
+], Users.prototype, "cart", void 0);
 _ts_decorate([
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({
