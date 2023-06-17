@@ -3,7 +3,6 @@ import { Request as Req, Response as Res } from 'express';
 import { sequelize } from '../server';
 import { Orders } from '../models/Orders';
 import { OrderDetails } from '../models/OrderDetails';
-// import { usersService } from '../services/users';
 
 interface Product {
   productId: string;
