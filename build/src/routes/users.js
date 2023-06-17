@@ -18,5 +18,6 @@ function _interop_require_default(obj) {
 const router = _express.default.Router();
 router.post('/', _users.usersController.createUser);
 router.get('/:userId', _users.usersController.getUser);
+router.get('/:userId/orders/:orderId', _users.usersController.getOneOrderByUser);
 router.delete('/:userId', _users.usersController.deleteUser);
 router.patch('/:userId', _users.usersController.updateUser);

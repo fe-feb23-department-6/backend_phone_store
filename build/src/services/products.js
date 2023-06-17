@@ -71,6 +71,18 @@ const getProductsById = async (namespaceId)=>{
         throw new Error('Failed to get product');
     }
 };
+const getOneProductById = async (productId)=>{
+    try {
+        const product = await _Products.Products.findOne({
+            where: {
+                id: productId
+            }
+        });
+        return product;
+    } catch (error) {
+        throw new Error('Failed to get product');
+    }
+};
 const getRecommendedProducts = async ()=>{
     try {
         const recommendedProducts = await _Products.Products.findAll({
@@ -87,5 +99,6 @@ const productsService = {
     getNewProducts,
     getHotProducts,
     getProductsById,
-    getRecommendedProducts
+    getRecommendedProducts,
+    getOneProductById
 };

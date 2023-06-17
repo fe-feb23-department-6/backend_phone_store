@@ -1,4 +1,4 @@
-'use strict';
+/* eslint-disable max-len */ 'use strict';
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -20,4 +20,6 @@ router.post('/', _orders.ordersController.createOrder);
 router.get('/', _orders.ordersController.getOrders);
 router.get('/:orderId', _orders.ordersController.getOneOrder);
 router.delete('/:orderId', _orders.ordersController.deleteOrder);
-router.patch('/:orderId', _orders.ordersController.updateOrder);
+router.patch('/:orderId/orderDetails/:orderDetailsId', _orders.ordersController.updateOrder);
+router.delete('/:orderId/orderDetails/:orderDetailsId', _orders.ordersController.deleteProductFromOrder);
+router.post('/:orderId/orderDetails', _orders.ordersController.addProductToOrder);

@@ -2,39 +2,18 @@
 import { Request as Req, Response as Res } from 'express';
 import { sequelize } from '../server';
 import { Orders } from '../models/Orders';
-import { OrderDetails } from '../models/OrderDetails';
-import { Op, WhereOptions } from 'sequelize';
-import { productsService } from '../services/products';
-
-interface Product {
-  productId: string;
-  quantity: number;
-}
+import { orderService } from '../services/orders';
 
 const createOrder = async(req: Req, res: Res) => {
   const { userId, products } = req.body;
   const transaction = await sequelize?.transaction();
 
   try {
-    const order = await Orders.create({ user_id: userId }, { transaction });
-
-    const orderDetails = products.map((product: Product) => ({
-      order_id: order.id,
-      products_id: product.productId,
-      quantity: product.quantity,
-    }));
-
-    await OrderDetails.bulkCreate(orderDetails, { transaction });
+    const order = await orderService.createOrder(userId, products, transaction);
 
     await transaction?.commit();
 
-    const createdOrder = {
-      id: order.id,
-      user_id: order.user_id,
-      products: orderDetails,
-    };
-
-    res.json(createdOrder);
+    res.json(order);
   } catch (error) {
     await transaction?.rollback();
     res.sendStatus(500);
@@ -45,25 +24,9 @@ const getOrders = async(req: Req, res: Res) => {
   const { userId, from, to } = req.query;
 
   try {
-    const whereConditions: WhereOptions = {};
+    const orders = await orderService.getOrders(userId, from, to);
 
-    if (userId) {
-      whereConditions.user_id = userId;
-    }
-
-    if (from && to) {
-      whereConditions.createdAt = { [Op.between]: [from, to] };
-    } else if (from) {
-      whereConditions.createdAt = { [Op.gte]: from };
-    } else if (to) {
-      whereConditions.createdAt = { [Op.lte]: to };
-    }
-
-    const listOfOrders = await Orders.findAll({
-      where: whereConditions,
-    });
-
-    res.send(listOfOrders);
+    res.send(orders);
   } catch (error) {
     res.sendStatus(500);
   }
@@ -74,26 +37,9 @@ const getOneOrder = async(req: Req, res: Res) => {
   const transaction = await sequelize?.transaction();
 
   try {
-    const orders = await OrderDetails.findAll({
-      where: {
-        order_id: orderId,
-      },
+    const ordersWithProductInfo = await orderService.getOneOrder(
+      orderId,
       transaction,
-    });
-
-    const ordersWithProductInfo = await Promise.all(
-      orders.map(async(order) => {
-        const productInfo = await productsService.getOneProductById(
-          order.products_id,
-        );
-
-        return {
-          order_id: order.order_id,
-          products_id: order.products_id,
-          quantity: order.quantity,
-          productInfo,
-        };
-      }),
     );
 
     await transaction?.commit();
@@ -122,19 +68,7 @@ const deleteOrder = async(req: Req, res: Res) => {
   }
 
   try {
-    await OrderDetails.destroy({
-      where: {
-        order_id: orderId,
-      },
-      transaction,
-    });
-
-    await Orders.destroy({
-      where: {
-        id: orderId,
-      },
-      transaction,
-    });
+    await orderService.deleteOrder(orderId, transaction);
 
     await transaction?.commit();
 
@@ -145,9 +79,82 @@ const deleteOrder = async(req: Req, res: Res) => {
   }
 };
 
+const updateOrder = async(req: Req, res: Res) => {
+  const { orderId, orderDetailsId } = req.params;
+  const { quantity, productId } = req.body;
+
+  try {
+    const updatedOrderDetail = await orderService.updateOrderDetails(
+      orderId,
+      orderDetailsId,
+      quantity,
+      productId,
+    );
+
+    res.json(updatedOrderDetail);
+  } catch (error) {
+    const message = (error as Error).message;
+
+    if (message === 'Order detail not found') {
+      res.sendStatus(404);
+    } else if (message === 'Invalid quantity or productId') {
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(500);
+    }
+  }
+};
+
+const deleteProductFromOrder = async(req: Req, res: Res) => {
+  const { orderId, orderDetailsId } = req.params;
+
+  try {
+    await orderService.deleteProductFromOrder(orderId, orderDetailsId);
+
+    res.sendStatus(204);
+  } catch (error) {
+    const message = (error as Error).message;
+
+    if (message === 'Order detail not found') {
+      res.sendStatus(404);
+    } else {
+      res.sendStatus(500);
+    }
+  }
+};
+
+const addProductToOrder = async(req: Req, res: Res) => {
+  const { orderId } = req.params;
+  const { quantity, productId } = req.body;
+
+  try {
+    const newOrderDetail = await orderService.addProductToOrder(
+      orderId,
+      quantity,
+      productId,
+    );
+
+    res.sendStatus(201);
+    res.send(newOrderDetail);
+  } catch (error) {
+    const message = (error as Error).message;
+
+    if (message === 'Order not found') {
+      res.sendStatus(404);
+    } else if (message === 'Invalid quantity or productId') {
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(500);
+    }
+  }
+};
+
 export const ordersController = {
   createOrder,
   getOrders,
   getOneOrder,
   deleteOrder,
+  updateOrder,
+  deleteProductFromOrder,
+  addProductToOrder,
 };

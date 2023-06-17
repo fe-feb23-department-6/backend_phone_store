@@ -10,44 +10,116 @@ Object.defineProperty(exports, "ordersController", {
 });
 const _server = require("../server");
 const _Orders = require("../models/Orders");
-const _OrderDetails = require("../models/OrderDetails");
+const _orders = require("../services/orders");
 const createOrder = async (req, res)=>{
     const { userId , products  } = req.body;
     const transaction = await _server.sequelize?.transaction();
     try {
-        const order = await _Orders.Orders.create({
-            user_id: userId
-        }, {
-            transaction
-        });
-        const orderDetails = products.map((product)=>({
-                order_id: order.id,
-                products_id: product.productId,
-                quantity: product.quantity
-            }));
-        await _OrderDetails.OrderDetails.bulkCreate(orderDetails, {
-            transaction
-        });
+        const order = await _orders.orderService.createOrder(userId, products, transaction);
         await transaction?.commit();
-        const createdOrder = {
-            id: order.id,
-            user_id: order.user_id,
-            products: orderDetails
-        };
-        res.json(createdOrder);
+        res.json(order);
     } catch (error) {
         await transaction?.rollback();
         res.sendStatus(500);
     }
 };
-const getOrders = async (req, res)=>{};
-const getOneOrder = async (req, res)=>{};
-const deleteOrder = async (req, res)=>{};
-const updateOrder = async (req, res)=>{};
+const getOrders = async (req, res)=>{
+    const { userId , from , to  } = req.query;
+    try {
+        const orders = await _orders.orderService.getOrders(userId, from, to);
+        res.send(orders);
+    } catch (error) {
+        res.sendStatus(500);
+    }
+};
+const getOneOrder = async (req, res)=>{
+    const { orderId  } = req.params;
+    const transaction = await _server.sequelize?.transaction();
+    try {
+        const ordersWithProductInfo = await _orders.orderService.getOneOrder(orderId, transaction);
+        await transaction?.commit();
+        res.json(ordersWithProductInfo);
+    } catch (error) {
+        await transaction?.rollback();
+        res.sendStatus(500);
+    }
+};
+const deleteOrder = async (req, res)=>{
+    const { orderId  } = req.params;
+    const transaction = await _server.sequelize?.transaction();
+    const foundOrder = await _Orders.Orders.findOne({
+        where: {
+            id: orderId
+        }
+    });
+    if (!foundOrder) {
+        res.sendStatus(404);
+        return;
+    }
+    try {
+        await _orders.orderService.deleteOrder(orderId, transaction);
+        await transaction?.commit();
+        res.sendStatus(204);
+    } catch (error) {
+        await transaction?.rollback();
+        res.sendStatus(500);
+    }
+};
+const updateOrder = async (req, res)=>{
+    const { orderId , orderDetailsId  } = req.params;
+    const { quantity , productId  } = req.body;
+    try {
+        const updatedOrderDetail = await _orders.orderService.updateOrderDetails(orderId, orderDetailsId, quantity, productId);
+        res.json(updatedOrderDetail);
+    } catch (error) {
+        const message = error.message;
+        if (message === 'Order detail not found') {
+            res.sendStatus(404);
+        } else if (message === 'Invalid quantity or productId') {
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(500);
+        }
+    }
+};
+const deleteProductFromOrder = async (req, res)=>{
+    const { orderId , orderDetailsId  } = req.params;
+    try {
+        await _orders.orderService.deleteProductFromOrder(orderId, orderDetailsId);
+        res.sendStatus(204);
+    } catch (error) {
+        const message = error.message;
+        if (message === 'Order detail not found') {
+            res.sendStatus(404);
+        } else {
+            res.sendStatus(500);
+        }
+    }
+};
+const addProductToOrder = async (req, res)=>{
+    const { orderId  } = req.params;
+    const { quantity , productId  } = req.body;
+    try {
+        const newOrderDetail = await _orders.orderService.addProductToOrder(orderId, quantity, productId);
+        res.sendStatus(201);
+        res.send(newOrderDetail);
+    } catch (error) {
+        const message = error.message;
+        if (message === 'Order not found') {
+            res.sendStatus(404);
+        } else if (message === 'Invalid quantity or productId') {
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(500);
+        }
+    }
+};
 const ordersController = {
     createOrder,
     getOrders,
     getOneOrder,
     deleteOrder,
-    updateOrder
+    updateOrder,
+    deleteProductFromOrder,
+    addProductToOrder
 };

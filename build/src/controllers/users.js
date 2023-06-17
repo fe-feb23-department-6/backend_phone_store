@@ -9,6 +9,7 @@ Object.defineProperty(exports, "usersController", {
     }
 });
 const _users = require("../services/users");
+const _server = require("../server");
 const getUser = async (req, res)=>{
     const { userId  } = req.params;
     const userIdNumber = Number(userId);
@@ -76,9 +77,27 @@ const updateUser = async (req, res)=>{
         res.sendStatus(500);
     }
 };
+const getOneOrderByUser = async (req, res)=>{
+    const { userId , orderId  } = req.params;
+    const transaction = await _server.sequelize?.transaction();
+    try {
+        const orderByUser = await _users.usersService.getOneOrderByUser(userId, orderId, transaction);
+        if (!orderByUser) {
+            res.sendStatus(404);
+            return;
+        }
+        const ordersWithProductInfo = await _users.usersService.getOrderDetails(orderId, transaction);
+        await transaction?.commit();
+        res.json(ordersWithProductInfo);
+    } catch (error) {
+        await transaction?.rollback();
+        res.sendStatus(500);
+    }
+};
 const usersController = {
     createUser,
     getUser,
     deleteUser,
-    updateUser
+    updateUser,
+    getOneOrderByUser
 };
