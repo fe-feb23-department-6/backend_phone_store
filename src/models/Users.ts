@@ -46,4 +46,10 @@ export class Users extends Model {
     type: DataType.STRING,
   })
     email: string;
+
+  @AllowNull(false)
+  @Column({
+    type: DataType.STRING,
+  })
+    password: string;
 }
