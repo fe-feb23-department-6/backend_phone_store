@@ -7,5 +7,6 @@ export const router = express.Router();
 
 router.post('/', usersController.createUser);
 router.get('/:userId', usersController.getUser);
+router.get('/:userId/orders/:orderId', usersController.getOneOrderByUser);
 router.delete('/:userId', usersController.deleteUser);
 router.patch('/:userId', usersController.updateUser);

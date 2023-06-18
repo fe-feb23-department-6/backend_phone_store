@@ -10,7 +10,7 @@ Object.defineProperty(exports, "OrderDetails", {
 });
 const _sequelizetypescript = require("sequelize-typescript");
 const _Orders = require("./Orders");
-const _Phones = require("./Phones");
+const _Products = require("./Products");
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {
@@ -36,8 +36,8 @@ let OrderDetails = class OrderDetails extends _sequelizetypescript.Model {
         _define_property(this, "id", void 0);
         _define_property(this, "order_id", void 0);
         _define_property(this, "order", void 0);
-        _define_property(this, "phone_id", void 0);
-        _define_property(this, "phone", void 0);
+        _define_property(this, "products_id", void 0);
+        _define_property(this, "product", void 0);
         _define_property(this, "quantity", void 0);
     }
 };
@@ -60,15 +60,15 @@ _ts_decorate([
     (0, _sequelizetypescript.BelongsTo)(()=>_Orders.Orders)
 ], OrderDetails.prototype, "order", void 0);
 _ts_decorate([
-    (0, _sequelizetypescript.ForeignKey)(()=>_Phones.Phones),
+    (0, _sequelizetypescript.ForeignKey)(()=>_Products.Products),
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({
         type: _sequelizetypescript.DataType.STRING
     })
-], OrderDetails.prototype, "phone_id", void 0);
+], OrderDetails.prototype, "products_id", void 0);
 _ts_decorate([
-    (0, _sequelizetypescript.BelongsTo)(()=>_Phones.Phones)
-], OrderDetails.prototype, "phone", void 0);
+    (0, _sequelizetypescript.BelongsTo)(()=>_Products.Products)
+], OrderDetails.prototype, "product", void 0);
 _ts_decorate([
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({

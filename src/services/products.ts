@@ -83,6 +83,20 @@ const getProductsById = async(namespaceId: string): Promise<Phones[]> => {
   }
 };
 
+const getOneProductById = async(productId: string) => {
+  try {
+    const product = await Products.findOne({
+      where: {
+        id: productId,
+      },
+    });
+
+    return product;
+  } catch (error) {
+    throw new Error('Failed to get product');
+  }
+};
+
 const getRecommendedProducts = async(): Promise<Products[]> => {
   try {
     const recommendedProducts = await Products.findAll({
@@ -102,4 +116,5 @@ export const productsService = {
   getHotProducts,
   getProductsById,
   getRecommendedProducts,
+  getOneProductById,
 };

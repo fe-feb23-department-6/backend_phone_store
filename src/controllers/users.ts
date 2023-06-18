@@ -1,6 +1,7 @@
 'use strict';
 import { Request as Req, Response as Res } from 'express';
 import { usersService } from '../services/users';
+import { sequelize } from '../server';
 
 const getUser = async(req: Req, res: Res) => {
   const { userId } = req.params;
@@ -92,9 +93,41 @@ const updateUser = async(req: Req, res: Res) => {
   }
 };
 
+const getOneOrderByUser = async(req: Req, res: Res) => {
+  const { userId, orderId } = req.params;
+  const transaction = await sequelize?.transaction();
+
+  try {
+    const orderByUser = await usersService.getOneOrderByUser(
+      userId,
+      orderId,
+      transaction,
+    );
+
+    if (!orderByUser) {
+      res.sendStatus(404);
+
+      return;
+    }
+
+    const ordersWithProductInfo = await usersService.getOrderDetails(
+      orderId,
+      transaction,
+    );
+
+    await transaction?.commit();
+
+    res.json(ordersWithProductInfo);
+  } catch (error) {
+    await transaction?.rollback();
+    res.sendStatus(500);
+  }
+};
+
 export const usersController = {
   createUser,
   getUser,
   deleteUser,
   updateUser,
+  getOneOrderByUser,
 };

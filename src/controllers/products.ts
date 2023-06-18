@@ -86,6 +86,24 @@ const getProductsById = async(req: Req, res: Res) => {
   }
 };
 
+const getOneProductById = async(req: Req, res: Res) => {
+  const { productId } = req.params;
+
+  try {
+    const product = await productsService.getOneProductById(productId);
+
+    if (!product) {
+      res.sendStatus(404);
+
+      return;
+    }
+
+    res.send(product);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+};
+
 const getRecommended = async(req: Req, res: Res) => {
   try {
     const recommendedProducts = await productsService.getRecommendedProducts();
@@ -108,4 +126,5 @@ export const productsController = {
   getHotPriceProducts,
   getProductsById,
   getRecommended,
+  getOneProductById,
 };
