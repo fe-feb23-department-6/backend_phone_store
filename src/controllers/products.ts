@@ -86,6 +86,7 @@ const getNamespaceListByProductsId = async(req: Req, res: Res) => {
 
     res.send(products);
   } catch (error) {
+    console.log('TEST', error);
     res.sendStatus(500);
   }
 };
