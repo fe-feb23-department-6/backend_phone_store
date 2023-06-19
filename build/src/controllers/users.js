@@ -25,13 +25,16 @@ const getUser = async (req, res)=>{
     }
 };
 const createUser = async (req, res)=>{
-    const { name , email  } = req.body;
-    if (!name || !email) {
+    const { name , email , password  } = req.body;
+    if (!name || !email || !password) {
         res.sendStatus(400);
         return;
     }
     try {
-        const newUser = await _users.usersService.createUser(name, email);
+        const newUser = await _users.usersService.createUser(name, email, password);
+        if (newUser) {
+            delete newUser.dataValues.password;
+        }
         res.statusCode = 201;
         res.send(newUser);
     } catch (error) {
@@ -62,16 +65,20 @@ const updateUser = async (req, res)=>{
             res.sendStatus(404);
             return;
         }
-        const { name  } = req.body;
-        if (!name) {
+        const { name , password  } = req.body;
+        if (!name && !password) {
             res.sendStatus(400);
             return;
         }
         await _users.usersService.updateUser({
             id: userIdNumber,
-            name
+            name,
+            password
         });
         const updatedUser = await _users.usersService.findUser(userIdNumber);
+        if (updatedUser) {
+            delete updatedUser.dataValues.password;
+        }
         res.send(updatedUser);
     } catch (error) {
         res.sendStatus(500);

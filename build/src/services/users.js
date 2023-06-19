@@ -15,10 +15,11 @@ const _OrderDetails = require("../models/OrderDetails");
 const findUser = async (userId)=>{
     return _Users.Users.findByPk(userId);
 };
-const createUser = async (name, email)=>{
+const createUser = async (name, email, password)=>{
     return _Users.Users.create({
         name,
-        email
+        email,
+        password
     });
 };
 const removeUser = async (userId)=>{
@@ -28,9 +29,10 @@ const removeUser = async (userId)=>{
         }
     });
 };
-const updateUser = async ({ id , name  })=>{
+const updateUser = async ({ id , name , password  })=>{
     return _Users.Users.update({
-        name
+        name,
+        password
     }, {
         where: {
             id

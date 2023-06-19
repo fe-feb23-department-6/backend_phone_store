@@ -40,6 +40,7 @@ let Users = class Users extends _sequelizetypescript.Model {
         _define_property(this, "cart", void 0);
         _define_property(this, "name", void 0);
         _define_property(this, "email", void 0);
+        _define_property(this, "password", void 0);
     }
 };
 _ts_decorate([
@@ -71,6 +72,12 @@ _ts_decorate([
         type: _sequelizetypescript.DataType.STRING
     })
 ], Users.prototype, "email", void 0);
+_ts_decorate([
+    (0, _sequelizetypescript.AllowNull)(false),
+    (0, _sequelizetypescript.Column)({
+        type: _sequelizetypescript.DataType.STRING
+    })
+], Users.prototype, "password", void 0);
 Users = _ts_decorate([
     (0, _sequelizetypescript.Table)({
         tableName: 'users',

@@ -11,10 +11,15 @@ const findUser = async(userId: number): Promise<Users | null> => {
   return Users.findByPk(userId);
 };
 
-const createUser = async(name: string, email: string): Promise<Users> => {
+const createUser = async(
+  name: string,
+  email: string,
+  password: string,
+): Promise<Users> => {
   return Users.create({
     name,
     email,
+    password,
   });
 };
 
@@ -24,8 +29,8 @@ const removeUser = async(userId: number): Promise<number> => {
   });
 };
 
-const updateUser = async({ id, name }: UserUpdateParams) => {
-  return Users.update({ name }, {
+const updateUser = async({ id, name, password }: UserUpdateParams) => {
+  return Users.update({ name, password }, {
     where: { id },
   });
 };

@@ -23,16 +23,20 @@ const getUser = async(req: Req, res: Res) => {
 };
 
 const createUser = async(req: Req, res: Res) => {
-  const { name, email } = req.body;
+  const { name, email, password } = req.body;
 
-  if (!name || !email) {
+  if (!name || !email || !password) {
     res.sendStatus(400);
 
     return;
   }
 
   try {
-    const newUser = await usersService.createUser(name, email);
+    const newUser = await usersService.createUser(name, email, password);
+
+    if (newUser) {
+      delete newUser.dataValues.password;
+    }
 
     res.statusCode = 201;
 
@@ -75,17 +79,21 @@ const updateUser = async(req: Req, res: Res) => {
       return;
     }
 
-    const { name } = req.body;
+    const { name, password } = req.body;
 
-    if (!name) {
+    if (!name && !password) {
       res.sendStatus(400);
 
       return;
     }
 
-    await usersService.updateUser({ id: userIdNumber, name });
+    await usersService.updateUser({ id: userIdNumber, name, password });
 
     const updatedUser = await usersService.findUser(userIdNumber);
+
+    if (updatedUser) {
+      delete updatedUser.dataValues.password;
+    }
 
     res.send(updatedUser);
   } catch (error) {
