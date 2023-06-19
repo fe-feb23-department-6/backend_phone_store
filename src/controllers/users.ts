@@ -4,11 +4,15 @@ import { usersService } from '../services/users';
 import { sequelize } from '../server';
 
 const getAllActive = async(req: Req, res: Res) => {
-  const users = await usersService.getAllActive();
+  try {
+    const users = await usersService.getAllActive();
 
-  res.send(
-    users.map(usersService.normalize),
-  );
+    res.send(
+      users.map(usersService.normalize),
+    );
+  } catch (error) {
+    res.sendStatus(500);
+  }
 };
 
 const getUserById = async(req: Req, res: Res) => {
