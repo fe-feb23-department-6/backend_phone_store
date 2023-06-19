@@ -17,7 +17,7 @@ const transporter: Transporter = nodemailer.createTransport({
   },
 } as SMTPTransport.Options);
 
-export function send({ email, subject, html }: MailOptions) {
+function send({ email, subject, html }: MailOptions) {
   return transporter.sendMail({
     from: 'Auth API',
     to: email,
@@ -26,3 +26,21 @@ export function send({ email, subject, html }: MailOptions) {
     html,
   });
 }
+
+function sendActivationLink(email: string, token: string) {
+  const link = `${process.env.CLIENT_URL}/activate/${token}`;
+
+  return send({
+    email,
+    subject: 'Account activation',
+    html: `
+      <h1>Account activation</h1>
+      <a href="${link}">${link}</a>
+    `,
+  });
+}
+
+export const emailService = {
+  send,
+  sendActivationLink,
+};
