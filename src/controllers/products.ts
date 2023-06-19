@@ -84,7 +84,7 @@ const getNamespaceListByProductsId = async(req: Req, res: Res) => {
     }
 
     const products = await productsService.getNamespaceListByProductsId(
-      product.namespaceId,
+      product.dataValues.namespaceId,
     );
 
     res.send(products);
