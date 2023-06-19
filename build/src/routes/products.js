@@ -17,11 +17,11 @@ function _interop_require_default(obj) {
 }
 const router = _express.default.Router();
 router.get('/', _products.productsController.getProducts);
-router.get('/:productId', _products.productsController.getOneProductById);
 router.get('/phones', _products.productsController.getProducts);
+router.get('/phones/:phoneId', _products.productsController.getNamespaceListByProductsId);
 router.get('/tablets', _products.productsController.getProducts);
 router.get('/accessories', _products.productsController.getProducts);
 router.get('/new', _products.productsController.getNewestProducts);
 router.get('/discount', _products.productsController.getHotPriceProducts);
-router.get('/:namespaceId', _products.productsController.getProductsById);
+router.get('/:productId', _products.productsController.getOneProductById);
 router.get('/:namespaceId/recommended', _products.productsController.getRecommended);

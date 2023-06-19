@@ -59,7 +59,19 @@ const getHotProducts = async ()=>{
         throw new Error('Failed to get products');
     }
 };
-const getProductsById = async (namespaceId)=>{
+const getOnePhoneById = async (phoneId)=>{
+    try {
+        const product = await _Phones.Phones.findOne({
+            where: {
+                id: phoneId
+            }
+        });
+        return product;
+    } catch (error) {
+        throw new Error('Failed to get product');
+    }
+};
+const getNamespaceListByProductsId = async (namespaceId)=>{
     try {
         const products = await _Phones.Phones.findAll({
             where: {
@@ -98,7 +110,8 @@ const productsService = {
     getProductsWithPagination,
     getNewProducts,
     getHotProducts,
-    getProductsById,
+    getNamespaceListByProductsId,
     getRecommendedProducts,
-    getOneProductById
+    getOneProductById,
+    getOnePhoneById
 };

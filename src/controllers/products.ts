@@ -68,17 +68,21 @@ const getHotPriceProducts = async(req: Req, res: Res) => {
   }
 };
 
-const getProductsById = async(req: Req, res: Res) => {
-  const { namespaceId } = req.params;
+const getNamespaceListByProductsId = async(req: Req, res: Res) => {
+  const { phoneId } = req.params;
 
   try {
-    const products = await productsService.getProductsById(namespaceId);
+    const product = await productsService.getOnePhoneById(phoneId);
 
-    if (!products) {
+    if (!product) {
       res.sendStatus(404);
 
       return;
     }
+
+    const products = await productsService.getNamespaceListByProductsId(
+      product.namespaceId,
+    );
 
     res.send(products);
   } catch (error) {
@@ -124,7 +128,7 @@ export const productsController = {
   getProducts,
   getNewestProducts,
   getHotPriceProducts,
-  getProductsById,
+  getNamespaceListByProductsId,
   getRecommended,
   getOneProductById,
 };
