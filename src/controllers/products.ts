@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 'use strict';
 import { Request as Req, Response as Res } from 'express';
 import { productsService } from '../services/products';
@@ -75,8 +74,6 @@ const getNamespaceListByProductsId = async(req: Req, res: Res) => {
   try {
     const product = await productsService.getOnePhoneById(phoneId);
 
-    console.log('TEST product ++++++!!!', product);
-
     if (!product) {
       res.sendStatus(404);
 
@@ -89,7 +86,6 @@ const getNamespaceListByProductsId = async(req: Req, res: Res) => {
 
     res.send(products);
   } catch (error) {
-    console.log('TEST', error);
     res.sendStatus(500);
   }
 };

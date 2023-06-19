@@ -1,4 +1,4 @@
-/* eslint-disable no-console */ 'use strict';
+'use strict';
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -54,7 +54,6 @@ const getNamespaceListByProductsId = async (req, res)=>{
     const { phoneId  } = req.params;
     try {
         const product = await _products.productsService.getOnePhoneById(phoneId);
-        console.log('TEST product ++++++!!!', product);
         if (!product) {
             res.sendStatus(404);
             return;
@@ -62,7 +61,6 @@ const getNamespaceListByProductsId = async (req, res)=>{
         const products = await _products.productsService.getNamespaceListByProductsId(product.dataValues.namespaceId);
         res.send(products);
     } catch (error) {
-        console.log('TEST', error);
         res.sendStatus(500);
     }
 };
