@@ -1,4 +1,4 @@
-/* eslint-disable no-console */ 'use strict';
+'use strict';
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -60,28 +60,24 @@ const getHotProducts = async ()=>{
     }
 };
 const getOnePhoneById = async (phoneId)=>{
-    console.log('TEST phoneID ++++++', phoneId);
     try {
         const product = await _Phones.Phones.findOne({
             where: {
                 id: phoneId
             }
         });
-        console.log('TEST findOne ++++++', product);
         return product;
     } catch (error) {
         throw new Error('Failed to get product');
     }
 };
 const getNamespaceListByProductsId = async (namespaceId)=>{
-    console.log('TEST namespaceId ++++++', namespaceId);
     try {
         const products = await _Phones.Phones.findAll({
             where: {
                 namespace_id: namespaceId
             }
         });
-        console.log('TEST findAll ++++++', products);
         return products;
     } catch (error) {
         throw new Error('Failed to get product');
