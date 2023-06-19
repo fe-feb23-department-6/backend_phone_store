@@ -6,6 +6,7 @@ import {
   Model,
   PrimaryKey,
   Table,
+  Unique,
 } from 'sequelize-typescript';
 import { Orders } from './Orders';
 import { Favorites } from './Favorites';
@@ -14,7 +15,7 @@ import { Cart } from './Cart';
 @Table({
   tableName: 'users',
   createdAt: true,
-  updatedAt: false,
+  updatedAt: true,
 })
 
 export class Users extends Model {
@@ -42,6 +43,7 @@ export class Users extends Model {
     name: string;
 
   @AllowNull(false)
+  @Unique(true)
   @Column({
     type: DataType.STRING,
   })

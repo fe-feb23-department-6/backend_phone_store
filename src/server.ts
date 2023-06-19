@@ -8,6 +8,7 @@ import { router as productsRouter } from './routes/products';
 import { router as customListRouter } from './routes/customList';
 import { router as imagesRouter } from './routes/images';
 import { router as usersRouter } from './routes/users';
+import { router as authRouter } from './routes/authentication';
 import { router as ordersRouter } from './routes/orders';
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
@@ -34,6 +35,7 @@ app.use(imagesRouter);
 app.use('/products', express.json(), productsRouter);
 app.use('/cart', express.json(), customListRouter);
 app.use('/favorites', express.json(), customListRouter);
+app.use('/registration', express.json(), authRouter);
 app.use('/users', express.json(), usersRouter);
 app.use('/orders', express.json(), ordersRouter);
 

@@ -11,17 +11,17 @@ const findUser = async(userId: number): Promise<Users | null> => {
   return Users.findByPk(userId);
 };
 
-const createUser = async(
-  name: string,
-  email: string,
-  password: string,
-): Promise<Users> => {
-  return Users.create({
-    name,
-    email,
-    password,
-  });
-};
+// const createUser = async(
+//   name: string,
+//   email: string,
+//   password: string,
+// ): Promise<Users> => {
+//   return Users.create({
+//     name,
+//     email,
+//     password,
+//   });
+// };
 
 const removeUser = async(userId: number): Promise<number> => {
   return Users.destroy({
@@ -82,7 +82,7 @@ const getOrderDetails = async(
 
 export const usersService = {
   findUser,
-  createUser,
+  // createUser,
   removeUser,
   updateUser,
   getOneOrderByUser,

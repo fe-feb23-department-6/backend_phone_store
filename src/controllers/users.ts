@@ -22,29 +22,29 @@ const getUser = async(req: Req, res: Res) => {
   }
 };
 
-const createUser = async(req: Req, res: Res) => {
-  const { name, email, password } = req.body;
+// const createUser = async(req: Req, res: Res) => {
+//   const { name, email, password } = req.body;
 
-  if (!name || !email || !password) {
-    res.sendStatus(400);
+//   if (!name || !email || !password) {
+//     res.sendStatus(400);
 
-    return;
-  }
+//     return;
+//   }
 
-  try {
-    const newUser = await usersService.createUser(name, email, password);
+//   try {
+//     const newUser = await usersService.createUser(name, email, password);
 
-    if (newUser) {
-      delete newUser.dataValues.password;
-    }
+//     if (newUser) {
+//       delete newUser.dataValues.password;
+//     }
 
-    res.statusCode = 201;
+//     res.statusCode = 201;
 
-    res.send(newUser);
-  } catch (error) {
-    res.sendStatus(500);
-  }
-};
+//     res.send(newUser);
+//   } catch (error) {
+//     res.sendStatus(500);
+//   }
+// };
 
 const deleteUser = async(req: Req, res: Res) => {
   const { userId } = req.params;
@@ -133,7 +133,7 @@ const getOneOrderByUser = async(req: Req, res: Res) => {
 };
 
 export const usersController = {
-  createUser,
+  // createUser,
   getUser,
   deleteUser,
   updateUser,
