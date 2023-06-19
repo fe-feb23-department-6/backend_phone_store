@@ -2,6 +2,7 @@
 'use strict';
 
 import { dbInit } from './utils/dbInit';
+import 'dotenv/config';
 import cors from 'cors';
 import path from 'path';
 import { router as productsRouter } from './routes/products';
