@@ -75,6 +75,8 @@ const getNamespaceListByProductsId = async(req: Req, res: Res) => {
   try {
     const product = await productsService.getOnePhoneById(phoneId);
 
+    console.log('TEST product ++++++!!!', product);
+
     if (!product) {
       res.sendStatus(404);
 
