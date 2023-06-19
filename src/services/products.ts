@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 import { sequelize } from '../server';
 import { literal } from 'sequelize';
@@ -70,12 +71,16 @@ const getHotProducts = async(): Promise<Products[]> => {
 };
 
 const getOnePhoneById = async(phoneId: string) => {
+  console.log('TEST phoneID ++++++', phoneId);
+
   try {
     const product = await Phones.findOne({
       where: {
         id: phoneId,
       },
     });
+
+    console.log('TEST findOne ++++++', product);
 
     return product;
   } catch (error) {
@@ -86,12 +91,16 @@ const getOnePhoneById = async(phoneId: string) => {
 const getNamespaceListByProductsId = async(
   namespaceId: string,
 ): Promise<Phones[]> => {
+  console.log('TEST namespaceId ++++++', namespaceId);
+
   try {
     const products = await Phones.findAll({
       where: {
         namespace_id: namespaceId,
       },
     });
+
+    console.log('TEST findAll ++++++', products);
 
     return products;
   } catch (error) {

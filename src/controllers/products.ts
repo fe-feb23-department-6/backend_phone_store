@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 import { Request as Req, Response as Res } from 'express';
 import { productsService } from '../services/products';
