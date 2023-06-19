@@ -25,6 +25,13 @@ app.use(cors({
   credentials: true,
 }));
 
+app.use(express.json());
+
+app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use(imagesRouter);
+
+app.use('/', express.json(), authRouter);
+
 app.get('/', (req, res, next) => {
   if (req.url === '/') {
     return res.redirect('/docs');
@@ -33,15 +40,11 @@ app.get('/', (req, res, next) => {
 });
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use('/public', express.static(path.join(__dirname, 'public')));
-app.use(imagesRouter);
-
-app.use('/products', express.json(), productsRouter);
-app.use('/cart', express.json(), customListRouter);
-app.use('/favorites', express.json(), customListRouter);
-app.use('/registration', express.json(), authRouter);
-app.use('/users', express.json(), usersRouter);
-app.use('/orders', express.json(), ordersRouter);
+app.use('/products', productsRouter);
+app.use('/cart', customListRouter);
+app.use('/favorites', customListRouter);
+app.use('/users', usersRouter);
+app.use('/orders', ordersRouter);
 
 app.listen(PORT, () => {
   console.log(`server is working on http://localhost:${PORT}`);

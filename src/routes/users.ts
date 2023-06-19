@@ -5,8 +5,8 @@ import { usersController } from '../controllers/users';
 
 export const router = express.Router();
 
-// router.post('/', usersController.createUser);
-router.get('/:userId', usersController.getUser);
+router.get('/', usersController.getAllActive);
+router.get('/:userId', usersController.getUserById);
 router.get('/:userId/orders/:orderId', usersController.getOneOrderByUser);
 router.delete('/:userId', usersController.deleteUser);
 router.patch('/:userId', usersController.updateUser);

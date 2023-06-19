@@ -7,21 +7,32 @@ import { Orders } from '../models/Orders';
 import { productsService } from './products';
 import { OrderDetails } from '../models/OrderDetails';
 
-const findUser = async(userId: number): Promise<Users | null> => {
-  return Users.findByPk(userId);
+const getAllActive = async() => {
+  return Users.findAll({
+    where: { activationToken: null },
+    order: ['id'],
+  });
 };
 
-// const createUser = async(
-//   name: string,
-//   email: string,
-//   password: string,
-// ): Promise<Users> => {
-//   return Users.create({
-//     name,
-//     email,
-//     password,
-//   });
-// };
+const getUserByEmail = (email: string) => {
+  return Users.findOne({
+    where: { email },
+  });
+};
+
+interface Normalize {
+  id: number,
+  email: string,
+  name: string,
+}
+
+const normalize = ({ id, email, name }: Normalize) => {
+  return { id, email, name };
+};
+
+const findUserById = async(userId: number): Promise<Users | null> => {
+  return Users.findByPk(userId);
+};
 
 const removeUser = async(userId: number): Promise<number> => {
   return Users.destroy({
@@ -81,10 +92,12 @@ const getOrderDetails = async(
 };
 
 export const usersService = {
-  findUser,
-  // createUser,
+  findUserById,
   removeUser,
   updateUser,
   getOneOrderByUser,
   getOrderDetails,
+  getAllActive,
+  normalize,
+  getUserByEmail,
 };

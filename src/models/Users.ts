@@ -54,4 +54,11 @@ export class Users extends Model {
     type: DataType.STRING,
   })
     password: string;
+
+  @AllowNull(true)
+  @Column({
+    field: 'activation_token',
+    type: DataType.STRING,
+  })
+    activationToken: string | null;
 }
