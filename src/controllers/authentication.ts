@@ -87,7 +87,7 @@ const refresh = async(req: Req, res: Res) => {
 };
 
 const sendAuthentication = async(res: Res, user: Users) => {
-  const userData = usersService.normalize(user);
+  const userData = usersService.normalize(user.dataValues);
 
   const accessToken = jwtService.generateAccessToken(userData);
   const refreshToken = jwtService.generateRefreshToken(userData);
