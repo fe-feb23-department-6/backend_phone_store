@@ -175,7 +175,7 @@ const activate = async(req: Req, res: Res) => {
       return;
     }
 
-    user.activationToken = null;
+    user.dataValues.activationToken = null;
     await user?.save();
 
     await sendAuthentication(res, user);

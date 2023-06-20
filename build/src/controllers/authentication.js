@@ -136,7 +136,7 @@ const activate = async (req, res)=>{
             res.sendStatus(404);
             return;
         }
-        user.activationToken = null;
+        user.dataValues.activationToken = null;
         await user?.save();
         await sendAuthentication(res, user);
     } catch (error) {
