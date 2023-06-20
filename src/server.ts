@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 3000;
 export const sequelize = dbInit();
 
 app.use(cors({
-  origin: process.env.CLIENT_URL,
+  origin: ['http://localhost:3000', process.env.CLIENT_URL!],
   credentials: true,
 }));
 

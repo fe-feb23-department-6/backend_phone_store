@@ -31,7 +31,10 @@ const app = (0, _express.default)();
 const PORT = process.env.PORT || 3000;
 const sequelize = (0, _dbInit.dbInit)();
 app.use((0, _cors.default)({
-    origin: process.env.CLIENT_URL,
+    origin: [
+        'http://localhost:3000',
+        process.env.CLIENT_URL
+    ],
     credentials: true
 }));
 app.use((0, _cookieparser.default)());
