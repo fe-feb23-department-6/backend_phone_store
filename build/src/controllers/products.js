@@ -58,7 +58,7 @@ const getNamespaceListByProductsId = async (req, res)=>{
             res.sendStatus(404);
             return;
         }
-        const products = await _products.productsService.getNamespaceListByProductsId(product.namespaceId);
+        const products = await _products.productsService.getNamespaceListByProductsId(product.dataValues.namespaceId);
         res.send(products);
     } catch (error) {
         res.sendStatus(500);
