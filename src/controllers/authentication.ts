@@ -92,7 +92,9 @@ const sendAuthentication = async(res: Res, user: Users) => {
   const accessToken = jwtService.generateAccessToken(userData);
   const refreshToken = jwtService.generateRefreshToken(userData);
 
-  await tokenService.save(user.id, refreshToken);
+  console.log('АКТИВАЦИЯ - ЕСТЬ ЛИ ЮЗЕР', user.id);
+  console.log('АКТИВАЦИЯ - ЕСТЬ ЛИ ЮЗЕР +++ dataValues', user.dataValues.id);
+  await tokenService.save(user.dataValues.id, refreshToken);
 
   res.cookie('refreshToken', refreshToken, {
     maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -146,7 +148,7 @@ const register = async(req: Req, res: Res) => {
 
     await emailService.sendActivationLink(email, activationToken);
 
-    const userData = usersService.normalize(newUser);
+    const userData = usersService.normalize(newUser.dataValues);
 
     console.log('РЕГИСТРАЦИЯ - ДАННЫЕ ПОСЛЕ НОРМАЛИЗАЦИИ', userData);
 
@@ -175,6 +177,7 @@ const activate = async(req: Req, res: Res) => {
     }
 
     user.activationToken = null;
+    console.log('АКТИВАЦИЯ - ЕСТЬ ЛИ ЮЗЕР', user);
     await user?.save();
 
     await sendAuthentication(res, user);
