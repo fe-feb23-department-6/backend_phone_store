@@ -3,18 +3,21 @@ import {
   AutoIncrement,
   Column, DataType,
   HasMany,
+  HasOne,
   Model,
   PrimaryKey,
   Table,
+  Unique,
 } from 'sequelize-typescript';
 import { Orders } from './Orders';
 import { Favorites } from './Favorites';
 import { Cart } from './Cart';
+import { Token } from './Token';
 
 @Table({
   tableName: 'users',
   createdAt: true,
-  updatedAt: false,
+  updatedAt: true,
 })
 
 export class Users extends Model {
@@ -35,6 +38,9 @@ export class Users extends Model {
   @HasMany(() => Cart)
     cart: Cart;
 
+  @HasOne(() => Token)
+    token: Token;
+
   @AllowNull(false)
   @Column({
     type: DataType.STRING,
@@ -42,6 +48,7 @@ export class Users extends Model {
     name: string;
 
   @AllowNull(false)
+  @Unique(true)
   @Column({
     type: DataType.STRING,
   })
@@ -52,4 +59,11 @@ export class Users extends Model {
     type: DataType.STRING,
   })
     password: string;
+
+  @AllowNull(true)
+  @Column({
+    field: 'activation_token',
+    type: DataType.STRING,
+  })
+    activationToken: string | null;
 }

@@ -4,6 +4,7 @@ import { OrderDetails } from './OrderDetails';
 import { Orders } from './Orders';
 import { Phones } from './Phones';
 import { Products } from './Products';
+import { Token } from './Token';
 import { Users } from './Users';
 
 export const models = [
@@ -14,4 +15,5 @@ export const models = [
   Users,
   Products,
   Phones,
+  Token,
 ];

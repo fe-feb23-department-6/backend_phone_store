@@ -3,12 +3,24 @@ import { Request as Req, Response as Res } from 'express';
 import { usersService } from '../services/users';
 import { sequelize } from '../server';
 
-const getUser = async(req: Req, res: Res) => {
+const getAllActive = async(req: Req, res: Res) => {
+  try {
+    const users = await usersService.getAllActive();
+
+    res.send(
+      users.map(usersService.normalize),
+    );
+  } catch (error) {
+    res.sendStatus(500);
+  }
+};
+
+const getUserById = async(req: Req, res: Res) => {
   const { userId } = req.params;
   const userIdNumber = Number(userId);
 
   try {
-    const foundUser = await usersService.findUser(userIdNumber);
+    const foundUser = await usersService.findUserById(userIdNumber);
 
     if (!foundUser) {
       res.sendStatus(404);
@@ -16,31 +28,11 @@ const getUser = async(req: Req, res: Res) => {
       return;
     }
 
-    res.send(foundUser);
-  } catch (error) {
-    res.sendStatus(500);
-  }
-};
+    const { id, email, name } = foundUser.dataValues;
 
-const createUser = async(req: Req, res: Res) => {
-  const { name, email, password } = req.body;
+    const normalizedUser = await usersService.normalize({ id, email, name });
 
-  if (!name || !email || !password) {
-    res.sendStatus(400);
-
-    return;
-  }
-
-  try {
-    const newUser = await usersService.createUser(name, email, password);
-
-    if (newUser) {
-      delete newUser.dataValues.password;
-    }
-
-    res.statusCode = 201;
-
-    res.send(newUser);
+    res.send(normalizedUser);
   } catch (error) {
     res.sendStatus(500);
   }
@@ -51,7 +43,7 @@ const deleteUser = async(req: Req, res: Res) => {
   const userIdNumber = Number(userId);
 
   try {
-    const foundUser = await usersService.findUser(userIdNumber);
+    const foundUser = await usersService.findUserById(userIdNumber);
 
     if (!foundUser) {
       res.sendStatus(404);
@@ -71,7 +63,7 @@ const updateUser = async(req: Req, res: Res) => {
   const userIdNumber = Number(userId);
 
   try {
-    const foundUser = await usersService.findUser(userIdNumber);
+    const foundUser = await usersService.findUserById(userIdNumber);
 
     if (!foundUser) {
       res.sendStatus(404);
@@ -89,13 +81,17 @@ const updateUser = async(req: Req, res: Res) => {
 
     await usersService.updateUser({ id: userIdNumber, name, password });
 
-    const updatedUser = await usersService.findUser(userIdNumber);
+    const updatedUser = await usersService.findUserById(userIdNumber);
+
+    const normalizedUser = await usersService.normalize(
+      updatedUser?.dataValues,
+    );
 
     if (updatedUser) {
       delete updatedUser.dataValues.password;
     }
 
-    res.send(updatedUser);
+    res.send(normalizedUser);
   } catch (error) {
     res.sendStatus(500);
   }
@@ -133,9 +129,9 @@ const getOneOrderByUser = async(req: Req, res: Res) => {
 };
 
 export const usersController = {
-  createUser,
-  getUser,
+  getUserById,
   deleteUser,
   updateUser,
   getOneOrderByUser,
+  getAllActive,
 };

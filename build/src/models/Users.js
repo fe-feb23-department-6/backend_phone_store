@@ -12,6 +12,7 @@ const _sequelizetypescript = require("sequelize-typescript");
 const _Orders = require("./Orders");
 const _Favorites = require("./Favorites");
 const _Cart = require("./Cart");
+const _Token = require("./Token");
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {
@@ -38,9 +39,11 @@ let Users = class Users extends _sequelizetypescript.Model {
         _define_property(this, "order", void 0);
         _define_property(this, "favorite", void 0);
         _define_property(this, "cart", void 0);
+        _define_property(this, "token", void 0);
         _define_property(this, "name", void 0);
         _define_property(this, "email", void 0);
         _define_property(this, "password", void 0);
+        _define_property(this, "activationToken", void 0);
     }
 };
 _ts_decorate([
@@ -61,6 +64,9 @@ _ts_decorate([
     (0, _sequelizetypescript.HasMany)(()=>_Cart.Cart)
 ], Users.prototype, "cart", void 0);
 _ts_decorate([
+    (0, _sequelizetypescript.HasOne)(()=>_Token.Token)
+], Users.prototype, "token", void 0);
+_ts_decorate([
     (0, _sequelizetypescript.AllowNull)(false),
     (0, _sequelizetypescript.Column)({
         type: _sequelizetypescript.DataType.STRING
@@ -68,6 +74,7 @@ _ts_decorate([
 ], Users.prototype, "name", void 0);
 _ts_decorate([
     (0, _sequelizetypescript.AllowNull)(false),
+    (0, _sequelizetypescript.Unique)(true),
     (0, _sequelizetypescript.Column)({
         type: _sequelizetypescript.DataType.STRING
     })
@@ -78,10 +85,17 @@ _ts_decorate([
         type: _sequelizetypescript.DataType.STRING
     })
 ], Users.prototype, "password", void 0);
+_ts_decorate([
+    (0, _sequelizetypescript.AllowNull)(true),
+    (0, _sequelizetypescript.Column)({
+        field: 'activation_token',
+        type: _sequelizetypescript.DataType.STRING
+    })
+], Users.prototype, "activationToken", void 0);
 Users = _ts_decorate([
     (0, _sequelizetypescript.Table)({
         tableName: 'users',
         createdAt: true,
-        updatedAt: false
+        updatedAt: true
     })
 ], Users);
