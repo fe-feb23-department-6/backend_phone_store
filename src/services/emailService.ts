@@ -28,7 +28,7 @@ function send({ email, subject, html }: MailOptions) {
 }
 
 function sendActivationLink(email: string, token: string) {
-  const link = `${process.env.CLIENT_URL}/activation/${token}`;
+  const link = `https://backend-phone-store.onrender.com/activation/${token}`;
 
   return send({
     email,
