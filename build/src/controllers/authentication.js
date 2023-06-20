@@ -46,7 +46,10 @@ const login = async (req, res)=>{
             res.status(400).send('User with this email does not exist');
             return;
         }
-        const isPasswordValid = await _bcrypt.default.compare(password, user.password);
+        console.log('ЛОГИН - ЮЗЕР', user);
+        console.log('ЛОГИН - ЮЗЕР ПАРОЛЬ', user.password);
+        console.log('ЛОГИН - ЮЗЕР ПАРОЛЬ +++ dataValues', user.dataValues.password);
+        const isPasswordValid = await _bcrypt.default.compare(password, user.dataValues.password);
         if (!isPasswordValid) {
             res.status(400).send('Password is wrong');
             return;
@@ -68,7 +71,12 @@ const refresh = async (req, res)=>{
         res.sendStatus(401);
         return;
     }
-    const user = await _users.usersService.getUserByEmail(userData.email);
+    console.log('РЕФРЕШ - refreshToken', refreshToken);
+    console.log('РЕФРЕШ - token', token);
+    console.log('РЕФРЕШ - userData', userData);
+    console.log('РЕФРЕШ - userData.email', userData.email);
+    console.log('РЕФРЕШ - userData.dataValues.email', userData.dataValues.email);
+    const user = await _users.usersService.getUserByEmail(userData.dataValues.email);
     if (!user) {
         res.sendStatus(401);
         return;
@@ -114,10 +122,8 @@ const register = async (req, res)=>{
         const activationToken = (0, _uuid.v4)();
         const hash = await _bcrypt.default.hash(password, 10);
         const newUser = await _authentication.authService.createUser(name, email, hash, activationToken);
-        console.log('РЕГИСТРАЦИЯ - ДАННЫЕ ДО НОРМАЛИЗАЦИИ', newUser);
         await _emailService.emailService.sendActivationLink(email, activationToken);
         const userData = _users.usersService.normalize(newUser.dataValues);
-        console.log('РЕГИСТРАЦИЯ - ДАННЫЕ ПОСЛЕ НОРМАЛИЗАЦИИ', userData);
         res.statusCode = 201;
         res.send(userData);
     } catch (error) {
@@ -127,7 +133,6 @@ const register = async (req, res)=>{
 const activate = async (req, res)=>{
     try {
         const { activationToken  } = req.params;
-        console.log('АКТИВАЦИЯ - ЧИТАЮ ТОКЕН', activationToken);
         const user = await _Users.Users.findOne({
             where: {
                 activationToken
@@ -138,11 +143,9 @@ const activate = async (req, res)=>{
             return;
         }
         user.activationToken = null;
-        console.log('АКТИВАЦИЯ - ЕСТЬ ЛИ ЮЗЕР', user);
         await user?.save();
         await sendAuthentication(res, user);
     } catch (error) {
-        console.log('АКТИВАЦИЯ - ОШИБКА', error);
         res.sendStatus(500);
     }
 };
@@ -150,8 +153,11 @@ const logout = async (req, res)=>{
     const { refreshToken  } = req.cookies;
     const userData = _jwtService.jwtService.validateRefreshToken(refreshToken);
     res.clearCookie('refreshToken');
+    console.log('ЛОГАУТ - userData', userData);
     if (userData && typeof userData !== 'string') {
-        await _tokenService.tokenService.remove(userData.id);
+        console.log('ЛОГАУТ - userData.id', userData.id);
+        console.log('ЛОГАУТ - userData.dataValues.id', userData.dataValues.id);
+        await _tokenService.tokenService.remove(userData.dataValues.id);
     }
     res.sendStatus(204);
 };

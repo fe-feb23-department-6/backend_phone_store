@@ -43,7 +43,14 @@ const login = async(req: Req, res: Res) => {
       return;
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log('ЛОГИН - ЮЗЕР', user);
+    console.log('ЛОГИН - ЮЗЕР ПАРОЛЬ', user.password);
+    console.log('ЛОГИН - ЮЗЕР ПАРОЛЬ +++ dataValues', user.dataValues.password);
+
+    const isPasswordValid = await bcrypt.compare(
+      password,
+      user.dataValues.password,
+    );
 
     if (!isPasswordValid) {
       res.status(400).send('Password is wrong');
@@ -75,7 +82,13 @@ const refresh = async(req: Req, res: Res) => {
     return;
   }
 
-  const user = await usersService.getUserByEmail(userData.email);
+  console.log('РЕФРЕШ - refreshToken', refreshToken);
+  console.log('РЕФРЕШ - token', token);
+  console.log('РЕФРЕШ - userData', userData);
+  console.log('РЕФРЕШ - userData.email', userData.email);
+  console.log('РЕФРЕШ - userData.dataValues.email', userData.dataValues.email);
+
+  const user = await usersService.getUserByEmail(userData.dataValues.email);
 
   if (!user) {
     res.sendStatus(401);
@@ -144,13 +157,9 @@ const register = async(req: Req, res: Res) => {
       activationToken,
     );
 
-    console.log('РЕГИСТРАЦИЯ - ДАННЫЕ ДО НОРМАЛИЗАЦИИ', newUser);
-
     await emailService.sendActivationLink(email, activationToken);
 
     const userData = usersService.normalize(newUser.dataValues);
-
-    console.log('РЕГИСТРАЦИЯ - ДАННЫЕ ПОСЛЕ НОРМАЛИЗАЦИИ', userData);
 
     res.statusCode = 201;
 
@@ -164,8 +173,6 @@ const activate = async(req: Req, res: Res) => {
   try {
     const { activationToken } = req.params;
 
-    console.log('АКТИВАЦИЯ - ЧИТАЮ ТОКЕН', activationToken);
-
     const user = await Users.findOne({
       where: { activationToken },
     });
@@ -177,12 +184,10 @@ const activate = async(req: Req, res: Res) => {
     }
 
     user.activationToken = null;
-    console.log('АКТИВАЦИЯ - ЕСТЬ ЛИ ЮЗЕР', user);
     await user?.save();
 
     await sendAuthentication(res, user);
   } catch (error) {
-    console.log('АКТИВАЦИЯ - ОШИБКА', error);
     res.sendStatus(500);
   }
 };
@@ -193,8 +198,12 @@ const logout = async(req: Req, res: Res) => {
 
   res.clearCookie('refreshToken');
 
+  console.log('ЛОГАУТ - userData', userData);
+
   if (userData && typeof userData !== 'string') {
-    await tokenService.remove(userData.id);
+    console.log('ЛОГАУТ - userData.id', userData.id);
+    console.log('ЛОГАУТ - userData.dataValues.id', userData.dataValues.id);
+    await tokenService.remove(userData.dataValues.id);
   }
 
   res.sendStatus(204);
