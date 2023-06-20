@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 'use strict';
 import { Request as Req, Response as Res } from 'express';
 import { v4 as uuidv4 } from 'uuid';
@@ -79,14 +78,7 @@ const refresh = async(req: Req, res: Res) => {
       return;
     }
 
-    console.log('РЕФРЕШ - refreshToken', refreshToken);
-    console.log('РЕФРЕШ - token', token);
-    console.log('РЕФРЕШ - userData', userData);
-    console.log('РЕФРЕШ - userData.email', userData.email);
-
     const user = await usersService.getUserByEmail(userData.email);
-
-    console.log('РЕФРЕШ - ЮЗЕР', user);
 
     if (!user) {
       res.sendStatus(401);
@@ -96,7 +88,6 @@ const refresh = async(req: Req, res: Res) => {
 
     await sendAuthentication(res, user);
   } catch (error) {
-    console.log('РЕФРЕШ - error', error);
     res.sendStatus(500);
   }
 };
@@ -104,16 +95,9 @@ const refresh = async(req: Req, res: Res) => {
 const sendAuthentication = async(res: Res, user: Users) => {
   const userData = usersService.normalize(user.dataValues);
 
-  console.log('РЕФРЕШ - userData', userData);
-
   const accessToken = jwtService.generateAccessToken(userData);
 
-  console.log('РЕФРЕШ - accessToken', accessToken);
-
   const refreshToken = jwtService.generateRefreshToken(userData);
-
-  console.log('РЕФРЕШ - refreshToken', refreshToken);
-  console.log('РЕФРЕШ - user.dataValues.id', user.dataValues.id);
 
   await tokenService.save(user.dataValues.id, refreshToken);
 
@@ -207,17 +191,12 @@ const logout = async(req: Req, res: Res) => {
 
     res.clearCookie('refreshToken');
 
-    console.log('ЛОГАУТ - userData', userData);
-
     if (userData && typeof userData !== 'string') {
-      console.log('ЛОГАУТ - userData.id', userData.id);
-      // console.log('ЛОГАУТ - userData.dataValues.id', userData.dataValues.id);
       await tokenService.remove(userData.id);
     }
 
     res.sendStatus(204);
   } catch (error) {
-    console.log('ЛОГАУТ - error', error);
     res.sendStatus(500);
   }
 };

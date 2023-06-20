@@ -1,4 +1,4 @@
-/* eslint-disable no-console */ 'use strict';
+'use strict';
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -69,30 +69,20 @@ const refresh = async (req, res)=>{
             res.sendStatus(401);
             return;
         }
-        console.log('РЕФРЕШ - refreshToken', refreshToken);
-        console.log('РЕФРЕШ - token', token);
-        console.log('РЕФРЕШ - userData', userData);
-        console.log('РЕФРЕШ - userData.email', userData.email);
         const user = await _users.usersService.getUserByEmail(userData.email);
-        console.log('РЕФРЕШ - ЮЗЕР', user);
         if (!user) {
             res.sendStatus(401);
             return;
         }
         await sendAuthentication(res, user);
     } catch (error) {
-        console.log('РЕФРЕШ - error', error);
         res.sendStatus(500);
     }
 };
 const sendAuthentication = async (res, user)=>{
     const userData = _users.usersService.normalize(user.dataValues);
-    console.log('РЕФРЕШ - userData', userData);
     const accessToken = _jwtService.jwtService.generateAccessToken(userData);
-    console.log('РЕФРЕШ - accessToken', accessToken);
     const refreshToken = _jwtService.jwtService.generateRefreshToken(userData);
-    console.log('РЕФРЕШ - refreshToken', refreshToken);
-    console.log('РЕФРЕШ - user.dataValues.id', user.dataValues.id);
     await _tokenService.tokenService.save(user.dataValues.id, refreshToken);
     res.cookie('refreshToken', refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -158,15 +148,11 @@ const logout = async (req, res)=>{
         const { refreshToken  } = req.cookies;
         const userData = _jwtService.jwtService.validateRefreshToken(refreshToken);
         res.clearCookie('refreshToken');
-        console.log('ЛОГАУТ - userData', userData);
         if (userData && typeof userData !== 'string') {
-            console.log('ЛОГАУТ - userData.id', userData.id);
-            // console.log('ЛОГАУТ - userData.dataValues.id', userData.dataValues.id);
             await _tokenService.tokenService.remove(userData.id);
         }
         res.sendStatus(204);
     } catch (error) {
-        console.log('ЛОГАУТ - error', error);
         res.sendStatus(500);
     }
 };
