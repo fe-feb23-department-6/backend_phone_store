@@ -82,10 +82,9 @@ const refresh = async(req: Req, res: Res) => {
     console.log('РЕФРЕШ - refreshToken', refreshToken);
     console.log('РЕФРЕШ - token', token);
     console.log('РЕФРЕШ - userData', userData);
-    // console.log('РЕФРЕШ - userData.email', userData.email);
-    console.log('РЕФРЕШ - userData.dataValue.email', userData.dataValues.email);
+    console.log('РЕФРЕШ - userData.email', userData.email);
 
-    const user = await usersService.getUserByEmail(userData.dataValues.email);
+    const user = await usersService.getUserByEmail(userData.email);
 
     if (!user) {
       res.sendStatus(401);
@@ -201,9 +200,9 @@ const logout = async(req: Req, res: Res) => {
     console.log('ЛОГАУТ - userData', userData);
 
     if (userData && typeof userData !== 'string') {
-      // console.log('ЛОГАУТ - userData.id', userData.id);
-      console.log('ЛОГАУТ - userData.dataValues.id', userData.dataValues.id);
-      await tokenService.remove(userData.dataValues.id);
+      console.log('ЛОГАУТ - userData.id', userData.id);
+      // console.log('ЛОГАУТ - userData.dataValues.id', userData.dataValues.id);
+      await tokenService.remove(userData.id);
     }
 
     res.sendStatus(204);

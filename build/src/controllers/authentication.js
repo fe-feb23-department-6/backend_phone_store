@@ -72,9 +72,8 @@ const refresh = async (req, res)=>{
         console.log('РЕФРЕШ - refreshToken', refreshToken);
         console.log('РЕФРЕШ - token', token);
         console.log('РЕФРЕШ - userData', userData);
-        // console.log('РЕФРЕШ - userData.email', userData.email);
-        console.log('РЕФРЕШ - userData.dataValue.email', userData.dataValues.email);
-        const user = await _users.usersService.getUserByEmail(userData.dataValues.email);
+        console.log('РЕФРЕШ - userData.email', userData.email);
+        const user = await _users.usersService.getUserByEmail(userData.email);
         if (!user) {
             res.sendStatus(401);
             return;
@@ -156,9 +155,9 @@ const logout = async (req, res)=>{
         res.clearCookie('refreshToken');
         console.log('ЛОГАУТ - userData', userData);
         if (userData && typeof userData !== 'string') {
-            // console.log('ЛОГАУТ - userData.id', userData.id);
-            console.log('ЛОГАУТ - userData.dataValues.id', userData.dataValues.id);
-            await _tokenService.tokenService.remove(userData.dataValues.id);
+            console.log('ЛОГАУТ - userData.id', userData.id);
+            // console.log('ЛОГАУТ - userData.dataValues.id', userData.dataValues.id);
+            await _tokenService.tokenService.remove(userData.id);
         }
         res.sendStatus(204);
     } catch (error) {
