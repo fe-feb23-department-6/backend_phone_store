@@ -43,10 +43,6 @@ const login = async(req: Req, res: Res) => {
       return;
     }
 
-    console.log('ЛОГИН - ЮЗЕР', user);
-    console.log('ЛОГИН - ЮЗЕР ПАРОЛЬ', user.password);
-    console.log('ЛОГИН - ЮЗЕР ПАРОЛЬ +++ dataValues', user.dataValues.password);
-
     const isPasswordValid = await bcrypt.compare(
       password,
       user.dataValues.password,
@@ -65,38 +61,43 @@ const login = async(req: Req, res: Res) => {
 };
 
 const refresh = async(req: Req, res: Res) => {
-  const { refreshToken } = req.cookies;
-  const userData = jwtService.validateRefreshToken(refreshToken);
+  try {
+    const { refreshToken } = req.cookies;
+    const userData = jwtService.validateRefreshToken(refreshToken);
 
-  if (!userData || typeof userData === 'string') {
-    res.sendStatus(401);
+    if (!userData || typeof userData === 'string') {
+      res.sendStatus(401);
 
-    return;
+      return;
+    }
+
+    const token = await tokenService.getByToken(refreshToken);
+
+    if (!token) {
+      res.sendStatus(401);
+
+      return;
+    }
+
+    console.log('РЕФРЕШ - refreshToken', refreshToken);
+    console.log('РЕФРЕШ - token', token);
+    console.log('РЕФРЕШ - userData', userData);
+    console.log('РЕФРЕШ - userData.email', userData.email);
+    console.log('РЕФРЕШ - userData.dataValue.email', userData.dataValues.email);
+
+    const user = await usersService.getUserByEmail(userData.email);
+
+    if (!user) {
+      res.sendStatus(401);
+
+      return;
+    }
+
+    await sendAuthentication(res, user);
+  } catch (error) {
+    console.log('РЕФРЕШ - error', error);
+    res.sendStatus(500);
   }
-
-  const token = await tokenService.getByToken(refreshToken);
-
-  if (!token) {
-    res.sendStatus(401);
-
-    return;
-  }
-
-  console.log('РЕФРЕШ - refreshToken', refreshToken);
-  console.log('РЕФРЕШ - token', token);
-  console.log('РЕФРЕШ - userData', userData);
-  console.log('РЕФРЕШ - userData.email', userData.email);
-  console.log('РЕФРЕШ - userData.dataValues.email', userData.dataValues.email);
-
-  const user = await usersService.getUserByEmail(userData.dataValues.email);
-
-  if (!user) {
-    res.sendStatus(401);
-
-    return;
-  }
-
-  await sendAuthentication(res, user);
 };
 
 const sendAuthentication = async(res: Res, user: Users) => {
@@ -105,8 +106,6 @@ const sendAuthentication = async(res: Res, user: Users) => {
   const accessToken = jwtService.generateAccessToken(userData);
   const refreshToken = jwtService.generateRefreshToken(userData);
 
-  console.log('АКТИВАЦИЯ - ЕСТЬ ЛИ ЮЗЕР', user.id);
-  console.log('АКТИВАЦИЯ - ЕСТЬ ЛИ ЮЗЕР +++ dataValues', user.dataValues.id);
   await tokenService.save(user.dataValues.id, refreshToken);
 
   res.cookie('refreshToken', refreshToken, {

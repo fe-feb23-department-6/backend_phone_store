@@ -46,9 +46,6 @@ const login = async (req, res)=>{
             res.status(400).send('User with this email does not exist');
             return;
         }
-        console.log('ЛОГИН - ЮЗЕР', user);
-        console.log('ЛОГИН - ЮЗЕР ПАРОЛЬ', user.password);
-        console.log('ЛОГИН - ЮЗЕР ПАРОЛЬ +++ dataValues', user.dataValues.password);
         const isPasswordValid = await _bcrypt.default.compare(password, user.dataValues.password);
         if (!isPasswordValid) {
             res.status(400).send('Password is wrong');
@@ -60,35 +57,38 @@ const login = async (req, res)=>{
     }
 };
 const refresh = async (req, res)=>{
-    const { refreshToken  } = req.cookies;
-    const userData = _jwtService.jwtService.validateRefreshToken(refreshToken);
-    if (!userData || typeof userData === 'string') {
-        res.sendStatus(401);
-        return;
+    try {
+        const { refreshToken  } = req.cookies;
+        const userData = _jwtService.jwtService.validateRefreshToken(refreshToken);
+        if (!userData || typeof userData === 'string') {
+            res.sendStatus(401);
+            return;
+        }
+        const token = await _tokenService.tokenService.getByToken(refreshToken);
+        if (!token) {
+            res.sendStatus(401);
+            return;
+        }
+        console.log('РЕФРЕШ - refreshToken', refreshToken);
+        console.log('РЕФРЕШ - token', token);
+        console.log('РЕФРЕШ - userData', userData);
+        console.log('РЕФРЕШ - userData.email', userData.email);
+        console.log('РЕФРЕШ - userData.dataValue.email', userData.dataValues.email);
+        const user = await _users.usersService.getUserByEmail(userData.email);
+        if (!user) {
+            res.sendStatus(401);
+            return;
+        }
+        await sendAuthentication(res, user);
+    } catch (error) {
+        console.log('РЕФРЕШ - error', error);
+        res.sendStatus(500);
     }
-    const token = await _tokenService.tokenService.getByToken(refreshToken);
-    if (!token) {
-        res.sendStatus(401);
-        return;
-    }
-    console.log('РЕФРЕШ - refreshToken', refreshToken);
-    console.log('РЕФРЕШ - token', token);
-    console.log('РЕФРЕШ - userData', userData);
-    console.log('РЕФРЕШ - userData.email', userData.email);
-    console.log('РЕФРЕШ - userData.dataValues.email', userData.dataValues.email);
-    const user = await _users.usersService.getUserByEmail(userData.dataValues.email);
-    if (!user) {
-        res.sendStatus(401);
-        return;
-    }
-    await sendAuthentication(res, user);
 };
 const sendAuthentication = async (res, user)=>{
     const userData = _users.usersService.normalize(user.dataValues);
     const accessToken = _jwtService.jwtService.generateAccessToken(userData);
     const refreshToken = _jwtService.jwtService.generateRefreshToken(userData);
-    console.log('АКТИВАЦИЯ - ЕСТЬ ЛИ ЮЗЕР', user.id);
-    console.log('АКТИВАЦИЯ - ЕСТЬ ЛИ ЮЗЕР +++ dataValues', user.dataValues.id);
     await _tokenService.tokenService.save(user.dataValues.id, refreshToken);
     res.cookie('refreshToken', refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
