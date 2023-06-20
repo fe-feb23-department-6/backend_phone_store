@@ -2,28 +2,33 @@
 import { Token } from '../models/Token';
 
 const save = async(userId: number, refreshToken: string) => {
-  console.log('TEST SAVE ID', userId);
-  console.log('TEST SAVE TOKEN', refreshToken);
+  try {
+    console.log('TEST SAVE ID', userId);
+    console.log('TEST SAVE TOKEN', refreshToken);
 
-  const token = await Token.findOne({
-    where: { userId },
-  });
+    const token = await Token.findOne({
+      where: { userId },
+    });
 
-  console.log('TOKEN BEFORE', token);
+    console.log('TOKEN BEFORE', token);
 
-  if (token) {
-    token.refreshToken = refreshToken;
+    if (token) {
+      // token.refreshToken = refreshToken;
 
-    await token.save();
+      await token.update({ refreshToken });
 
-    return;
+      return;
+    }
+
+    console.log('TOKEN AFTER', token);
+
+    const test = await Token.create({ userId, refreshToken });
+
+    console.log('TOKEN CREATE', test);
+  } catch (error) {
+    console.error('!!!!Error while saving the token!!!!: ', error);
+    throw new Error('Failed to save token');
   }
-
-  console.log('TOKEN AFTER', token);
-
-  const test = await Token.create({ userId, refreshToken });
-
-  console.log('TOKEN CREATE', test);
 };
 
 const getByToken = async(refreshToken: string) => {
