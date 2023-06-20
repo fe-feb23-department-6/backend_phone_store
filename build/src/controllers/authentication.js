@@ -151,7 +151,7 @@ const activate = async (req, res)=>{
             res.sendStatus(404);
             return;
         }
-        user.activationToken = null;
+        user.activationToken = null; // перепистать update
         await user?.save();
         console.log('ACTIV user.activationToken', user.activationToken);
         await sendAuthentication(res, user);

@@ -201,7 +201,7 @@ const activate = async(req: Req, res: Res) => {
       return;
     }
 
-    user.activationToken = null;
+    user.activationToken = null; // перепистать update
     await user?.save();
 
     console.log('ACTIV user.activationToken', user.activationToken);
