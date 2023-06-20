@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 import { Request as Req, Response as Res } from 'express';
 import { v4 as uuidv4 } from 'uuid';
@@ -141,9 +142,13 @@ const register = async(req: Req, res: Res) => {
       activationToken,
     );
 
+    console.log('РЕГИСТРАЦИЯ - ДАННЫЕ ДО НОРМАЛИЗАЦИИ', newUser);
+
     await emailService.sendActivationLink(email, activationToken);
 
     const userData = usersService.normalize(newUser);
+
+    console.log('РЕГИСТРАЦИЯ - ДАННЫЕ ПОСЛЕ НОРМАЛИЗАЦИИ', userData);
 
     res.statusCode = 201;
 
@@ -156,6 +161,8 @@ const register = async(req: Req, res: Res) => {
 const activate = async(req: Req, res: Res) => {
   try {
     const { activationToken } = req.params;
+
+    console.log('АКТИВАЦИЯ - ЧИТАЮ ТОКЕН', activationToken);
 
     const user = await Users.findOne({
       where: { activationToken },
@@ -172,6 +179,7 @@ const activate = async(req: Req, res: Res) => {
 
     await sendAuthentication(res, user);
   } catch (error) {
+    console.log('АКТИВАЦИЯ - ОШИБКА', error);
     res.sendStatus(500);
   }
 };
