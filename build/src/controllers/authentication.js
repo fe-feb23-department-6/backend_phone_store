@@ -1,4 +1,4 @@
-'use strict';
+/* eslint-disable no-console */ 'use strict';
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -112,8 +112,10 @@ const register = async (req, res)=>{
         const activationToken = (0, _uuid.v4)();
         const hash = await _bcrypt.default.hash(password, 10);
         const newUser = await _authentication.authService.createUser(name, email, hash, activationToken);
+        console.log('РЕГИСТРАЦИЯ - ДАННЫЕ ДО НОРМАЛИЗАЦИИ', newUser);
         await _emailService.emailService.sendActivationLink(email, activationToken);
         const userData = _users.usersService.normalize(newUser);
+        console.log('РЕГИСТРАЦИЯ - ДАННЫЕ ПОСЛЕ НОРМАЛИЗАЦИИ', userData);
         res.statusCode = 201;
         res.send(userData);
     } catch (error) {
@@ -123,6 +125,7 @@ const register = async (req, res)=>{
 const activate = async (req, res)=>{
     try {
         const { activationToken  } = req.params;
+        console.log('АКТИВАЦИЯ - ЧИТАЮ ТОКЕН', activationToken);
         const user = await _Users.Users.findOne({
             where: {
                 activationToken
@@ -136,6 +139,7 @@ const activate = async (req, res)=>{
         await user?.save();
         await sendAuthentication(res, user);
     } catch (error) {
+        console.log('АКТИВАЦИЯ - ОШИБКА', error);
         res.sendStatus(500);
     }
 };
