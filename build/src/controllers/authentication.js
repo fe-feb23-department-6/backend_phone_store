@@ -76,7 +76,7 @@ const refresh = async (req, res)=>{
     await sendAuthentication(res, user);
 };
 const sendAuthentication = async (res, user)=>{
-    const userData = _users.usersService.normalize(user);
+    const userData = _users.usersService.normalize(user.dataValues);
     const accessToken = _jwtService.jwtService.generateAccessToken(userData);
     const refreshToken = _jwtService.jwtService.generateRefreshToken(userData);
     console.log('АКТИВАЦИЯ - ЕСТЬ ЛИ ЮЗЕР', user.id);
