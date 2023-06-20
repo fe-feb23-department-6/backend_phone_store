@@ -6,7 +6,8 @@ import { dbInit } from './utils/dbInit';
 // import { Favorites } from './models/Favorites';
 // import { OrderDetails } from './models/OrderDetails';
 // import { Orders } from './models/Orders';
-import { Users } from './models/Users';
+// import { Users } from './models/Users';
+import { Token } from './models/Token';
 // import { seedInitialPhones } from './seeders/seedPhones';
 // import { seedInitialProducts } from './seeders/seedProducts';
 
@@ -15,13 +16,14 @@ export const sync = async() => {
     dbInit();
     // await Phones.sync({ alter: true });
     // await Products.sync({ alter: true });
-    await Users.sync({ alter: true });
+    // await Users.sync({ alter: true });
     // await Orders.sync({ alter: true });
     // await OrderDetails.sync({ alter: true });
     // await Cart.sync({ alter: true });
     // await Favorites.sync({ alter: true });
     // await seedInitialPhones();
     // await seedInitialProducts();
+    await Token.sync({ alter: true });
   } catch (error) {
     console.log(error);
   }

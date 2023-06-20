@@ -10,33 +10,30 @@ Object.defineProperty(exports, "usersController", {
 });
 const _users = require("../services/users");
 const _server = require("../server");
-const getUser = async (req, res)=>{
-    const { userId  } = req.params;
-    const userIdNumber = Number(userId);
+const getAllActive = async (req, res)=>{
     try {
-        const foundUser = await _users.usersService.findUser(userIdNumber);
-        if (!foundUser) {
-            res.sendStatus(404);
-            return;
-        }
-        res.send(foundUser);
+        const users = await _users.usersService.getAllActive();
+        res.send(users.map(_users.usersService.normalize));
     } catch (error) {
         res.sendStatus(500);
     }
 };
-const createUser = async (req, res)=>{
-    const { name , email , password  } = req.body;
-    if (!name || !email || !password) {
-        res.sendStatus(400);
-        return;
-    }
+const getUserById = async (req, res)=>{
+    const { userId  } = req.params;
+    const userIdNumber = Number(userId);
     try {
-        const newUser = await _users.usersService.createUser(name, email, password);
-        if (newUser) {
-            delete newUser.dataValues.password;
+        const foundUser = await _users.usersService.findUserById(userIdNumber);
+        if (!foundUser) {
+            res.sendStatus(404);
+            return;
         }
-        res.statusCode = 201;
-        res.send(newUser);
+        const { id , email , name  } = foundUser.dataValues;
+        const normalizedUser = await _users.usersService.normalize({
+            id,
+            email,
+            name
+        });
+        res.send(normalizedUser);
     } catch (error) {
         res.sendStatus(500);
     }
@@ -45,7 +42,7 @@ const deleteUser = async (req, res)=>{
     const { userId  } = req.params;
     const userIdNumber = Number(userId);
     try {
-        const foundUser = await _users.usersService.findUser(userIdNumber);
+        const foundUser = await _users.usersService.findUserById(userIdNumber);
         if (!foundUser) {
             res.sendStatus(404);
             return;
@@ -60,7 +57,7 @@ const updateUser = async (req, res)=>{
     const { userId  } = req.params;
     const userIdNumber = Number(userId);
     try {
-        const foundUser = await _users.usersService.findUser(userIdNumber);
+        const foundUser = await _users.usersService.findUserById(userIdNumber);
         if (!foundUser) {
             res.sendStatus(404);
             return;
@@ -75,11 +72,12 @@ const updateUser = async (req, res)=>{
             name,
             password
         });
-        const updatedUser = await _users.usersService.findUser(userIdNumber);
+        const updatedUser = await _users.usersService.findUserById(userIdNumber);
+        const normalizedUser = await _users.usersService.normalize(updatedUser?.dataValues);
         if (updatedUser) {
             delete updatedUser.dataValues.password;
         }
-        res.send(updatedUser);
+        res.send(normalizedUser);
     } catch (error) {
         res.sendStatus(500);
     }
@@ -102,9 +100,9 @@ const getOneOrderByUser = async (req, res)=>{
     }
 };
 const usersController = {
-    createUser,
-    getUser,
+    getUserById,
     deleteUser,
     updateUser,
-    getOneOrderByUser
+    getOneOrderByUser,
+    getAllActive
 };

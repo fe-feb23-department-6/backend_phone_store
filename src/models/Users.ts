@@ -3,6 +3,7 @@ import {
   AutoIncrement,
   Column, DataType,
   HasMany,
+  HasOne,
   Model,
   PrimaryKey,
   Table,
@@ -11,6 +12,7 @@ import {
 import { Orders } from './Orders';
 import { Favorites } from './Favorites';
 import { Cart } from './Cart';
+import { Token } from './Token';
 
 @Table({
   tableName: 'users',
@@ -35,6 +37,9 @@ export class Users extends Model {
 
   @HasMany(() => Cart)
     cart: Cart;
+
+  @HasOne(() => Token)
+    token: Token;
 
   @AllowNull(false)
   @Column({

@@ -12,6 +12,7 @@ import { router as usersRouter } from './routes/users';
 import { router as authRouter } from './routes/authentication';
 import { router as ordersRouter } from './routes/orders';
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './product_catalog.json';
 
@@ -25,6 +26,7 @@ app.use(cors({
   credentials: true,
 }));
 
+app.use(cookieParser());
 app.use(express.json());
 
 app.use('/public', express.static(path.join(__dirname, 'public')));

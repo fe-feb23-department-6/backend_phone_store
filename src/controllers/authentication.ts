@@ -7,6 +7,7 @@ import { emailService } from '../services/emailService';
 import { Users } from '../models/Users';
 import { usersService } from '../services/users';
 import { jwtService } from '../services/jwtService';
+import { tokenService } from '../services/tokenService';
 
 function validateEmail(value: string) {
   if (!value) {
@@ -33,7 +34,6 @@ const validatePassword = (value: string) => {
 const login = async(req: Req, res: Res) => {
   try {
     const { email, password } = req.body;
-
     const user = await usersService.getUserByEmail(email);
 
     if (!user) {
@@ -50,17 +50,60 @@ const login = async(req: Req, res: Res) => {
       return;
     }
 
-    const userData = usersService.normalize(user);
-
-    const accessToken = jwtService.generateAccessToken(userData);
-
-    res.send({
-      user: userData,
-      accessToken,
-    });
+    await sendAuthentication(res, user);
   } catch (error) {
     res.sendStatus(500);
   }
+};
+
+const refresh = async(req: Req, res: Res) => {
+  const { refreshToken } = req.cookies;
+  const userData = jwtService.validateRefreshToken(refreshToken);
+
+  if (!userData || typeof userData === 'string') {
+    res.sendStatus(401);
+
+    return;
+  }
+
+  const token = await tokenService.getByToken(refreshToken);
+
+  if (!token) {
+    res.sendStatus(401);
+
+    return;
+  }
+
+  const user = await usersService.getUserByEmail(userData.email);
+
+  if (!user) {
+    res.sendStatus(401);
+
+    return;
+  }
+
+  await sendAuthentication(res, user);
+};
+
+const sendAuthentication = async(res: Res, user: Users) => {
+  const userData = usersService.normalize(user);
+
+  const accessToken = jwtService.generateAccessToken(userData);
+  const refreshToken = jwtService.generateRefreshToken(userData);
+
+  await tokenService.save(user.id, refreshToken);
+
+  res.cookie('refreshToken', refreshToken, {
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    sameSite: 'none',
+    secure: true,
+  });
+
+  res.send({
+    user: userData,
+    accessToken,
+  });
 };
 
 const register = async(req: Req, res: Res) => {
@@ -127,14 +170,29 @@ const activate = async(req: Req, res: Res) => {
     user.activationToken = null;
     await user?.save();
 
-    res.send(user);
+    await sendAuthentication(res, user);
   } catch (error) {
     res.sendStatus(500);
   }
+};
+
+const logout = async(req: Req, res: Res) => {
+  const { refreshToken } = req.cookies;
+  const userData = jwtService.validateRefreshToken(refreshToken);
+
+  res.clearCookie('refreshToken');
+
+  if (userData && typeof userData !== 'string') {
+    await tokenService.remove(userData.id);
+  }
+
+  res.sendStatus(204);
 };
 
 export const authController = {
   register,
   activate,
   login,
+  refresh,
+  logout,
 };

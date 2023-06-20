@@ -12,15 +12,32 @@ const _Users = require("../models/Users");
 const _Orders = require("../models/Orders");
 const _products = require("./products");
 const _OrderDetails = require("../models/OrderDetails");
-const findUser = async (userId)=>{
-    return _Users.Users.findByPk(userId);
-};
-const createUser = async (name, email, password)=>{
-    return _Users.Users.create({
-        name,
-        email,
-        password
+const getAllActive = async ()=>{
+    return _Users.Users.findAll({
+        where: {
+            activationToken: null
+        },
+        order: [
+            'id'
+        ]
     });
+};
+const getUserByEmail = (email)=>{
+    return _Users.Users.findOne({
+        where: {
+            email
+        }
+    });
+};
+const normalize = ({ id , email , name  })=>{
+    return {
+        id,
+        email,
+        name
+    };
+};
+const findUserById = async (userId)=>{
+    return _Users.Users.findByPk(userId);
 };
 const removeUser = async (userId)=>{
     return _Users.Users.destroy({
@@ -68,10 +85,12 @@ const getOrderDetails = async (orderId, transaction)=>{
     return ordersWithProductInfo;
 };
 const usersService = {
-    findUser,
-    createUser,
+    findUserById,
     removeUser,
     updateUser,
     getOneOrderByUser,
-    getOrderDetails
+    getOrderDetails,
+    getAllActive,
+    normalize,
+    getUserByEmail
 };
