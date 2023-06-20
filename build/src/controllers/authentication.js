@@ -74,6 +74,7 @@ const refresh = async (req, res)=>{
         console.log('РЕФРЕШ - userData', userData);
         console.log('РЕФРЕШ - userData.email', userData.email);
         const user = await _users.usersService.getUserByEmail(userData.email);
+        console.log('РЕФРЕШ - ЮЗЕР', user);
         if (!user) {
             res.sendStatus(401);
             return;
@@ -86,8 +87,12 @@ const refresh = async (req, res)=>{
 };
 const sendAuthentication = async (res, user)=>{
     const userData = _users.usersService.normalize(user.dataValues);
+    console.log('РЕФРЕШ - userData', userData);
     const accessToken = _jwtService.jwtService.generateAccessToken(userData);
+    console.log('РЕФРЕШ - accessToken', accessToken);
     const refreshToken = _jwtService.jwtService.generateRefreshToken(userData);
+    console.log('РЕФРЕШ - refreshToken', refreshToken);
+    console.log('РЕФРЕШ - user.dataValues.id', user.dataValues.id);
     await _tokenService.tokenService.save(user.dataValues.id, refreshToken);
     res.cookie('refreshToken', refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
