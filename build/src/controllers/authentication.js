@@ -72,9 +72,9 @@ const refresh = async (req, res)=>{
         console.log('РЕФРЕШ - refreshToken', refreshToken);
         console.log('РЕФРЕШ - token', token);
         console.log('РЕФРЕШ - userData', userData);
-        console.log('РЕФРЕШ - userData.email', userData.email);
+        // console.log('РЕФРЕШ - userData.email', userData.email);
         console.log('РЕФРЕШ - userData.dataValue.email', userData.dataValues.email);
-        const user = await _users.usersService.getUserByEmail(userData.email);
+        const user = await _users.usersService.getUserByEmail(userData.dataValues.email);
         if (!user) {
             res.sendStatus(401);
             return;
@@ -150,16 +150,21 @@ const activate = async (req, res)=>{
     }
 };
 const logout = async (req, res)=>{
-    const { refreshToken  } = req.cookies;
-    const userData = _jwtService.jwtService.validateRefreshToken(refreshToken);
-    res.clearCookie('refreshToken');
-    console.log('ЛОГАУТ - userData', userData);
-    if (userData && typeof userData !== 'string') {
-        console.log('ЛОГАУТ - userData.id', userData.id);
-        console.log('ЛОГАУТ - userData.dataValues.id', userData.dataValues.id);
-        await _tokenService.tokenService.remove(userData.dataValues.id);
+    try {
+        const { refreshToken  } = req.cookies;
+        const userData = _jwtService.jwtService.validateRefreshToken(refreshToken);
+        res.clearCookie('refreshToken');
+        console.log('ЛОГАУТ - userData', userData);
+        if (userData && typeof userData !== 'string') {
+            // console.log('ЛОГАУТ - userData.id', userData.id);
+            console.log('ЛОГАУТ - userData.dataValues.id', userData.dataValues.id);
+            await _tokenService.tokenService.remove(userData.dataValues.id);
+        }
+        res.sendStatus(204);
+    } catch (error) {
+        console.log('ЛОГАУТ - error', error);
+        res.sendStatus(500);
     }
-    res.sendStatus(204);
 };
 const authController = {
     register,
