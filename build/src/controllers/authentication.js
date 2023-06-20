@@ -79,7 +79,9 @@ const sendAuthentication = async (res, user)=>{
     const userData = _users.usersService.normalize(user);
     const accessToken = _jwtService.jwtService.generateAccessToken(userData);
     const refreshToken = _jwtService.jwtService.generateRefreshToken(userData);
-    await _tokenService.tokenService.save(user.id, refreshToken);
+    console.log('АКТИВАЦИЯ - ЕСТЬ ЛИ ЮЗЕР', user.id);
+    console.log('АКТИВАЦИЯ - ЕСТЬ ЛИ ЮЗЕР +++ dataValues', user.dataValues.id);
+    await _tokenService.tokenService.save(user.dataValues.id, refreshToken);
     res.cookie('refreshToken', refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
@@ -114,7 +116,7 @@ const register = async (req, res)=>{
         const newUser = await _authentication.authService.createUser(name, email, hash, activationToken);
         console.log('РЕГИСТРАЦИЯ - ДАННЫЕ ДО НОРМАЛИЗАЦИИ', newUser);
         await _emailService.emailService.sendActivationLink(email, activationToken);
-        const userData = _users.usersService.normalize(newUser);
+        const userData = _users.usersService.normalize(newUser.dataValues);
         console.log('РЕГИСТРАЦИЯ - ДАННЫЕ ПОСЛЕ НОРМАЛИЗАЦИИ', userData);
         res.statusCode = 201;
         res.send(userData);
@@ -136,6 +138,7 @@ const activate = async (req, res)=>{
             return;
         }
         user.activationToken = null;
+        console.log('АКТИВАЦИЯ - ЕСТЬ ЛИ ЮЗЕР', user);
         await user?.save();
         await sendAuthentication(res, user);
     } catch (error) {
