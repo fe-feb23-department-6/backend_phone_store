@@ -1,4 +1,4 @@
-'use strict';
+/* eslint-disable no-console */ 'use strict';
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -59,41 +59,54 @@ const login = async (req, res)=>{
 const refresh = async (req, res)=>{
     try {
         const { refreshToken  } = req.cookies;
+        console.log('REFRESH refreshToken', refreshToken);
         const userData = _jwtService.jwtService.validateRefreshToken(refreshToken);
+        console.log('REFRESH userData', userData);
         if (!userData || typeof userData === 'string') {
             res.sendStatus(401);
             return;
         }
         const token = await _tokenService.tokenService.getByToken(refreshToken);
+        console.log('REFRESH token', token);
         if (!token) {
             res.sendStatus(401);
             return;
         }
         const user = await _users.usersService.getUserByEmail(userData.email);
+        console.log('REFRESH user', user);
         if (!user) {
             res.sendStatus(401);
             return;
         }
         await sendAuthentication(res, user);
     } catch (error) {
+        console.log('REFRESH error', error);
         res.sendStatus(500);
     }
 };
 const sendAuthentication = async (res, user)=>{
-    const userData = _users.usersService.normalize(user.dataValues);
-    const accessToken = _jwtService.jwtService.generateAccessToken(userData);
-    const refreshToken = _jwtService.jwtService.generateRefreshToken(userData);
-    await _tokenService.tokenService.save(user.dataValues.id, refreshToken);
-    res.cookie('refreshToken', refreshToken, {
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
-        sameSite: 'none',
-        secure: true
-    });
-    res.send({
-        user: userData,
-        accessToken
-    });
+    try {
+        const userData = _users.usersService.normalize(user.dataValues);
+        console.log('AUTH userData', userData);
+        const accessToken = _jwtService.jwtService.generateAccessToken(userData);
+        console.log('AUTH accessToken', accessToken);
+        const refreshToken = _jwtService.jwtService.generateRefreshToken(userData);
+        console.log('AUTH refreshToken', refreshToken);
+        await _tokenService.tokenService.save(user.dataValues.id, refreshToken);
+        res.cookie('refreshToken', refreshToken, {
+            maxAge: 30 * 24 * 60 * 60 * 1000,
+            httpOnly: true,
+            sameSite: 'none',
+            secure: true
+        });
+        res.send({
+            user: userData,
+            accessToken
+        });
+    } catch (error) {
+        console.log('AUTH error', error);
+        res.sendStatus(500);
+    }
 };
 const register = async (req, res)=>{
     const { name , email , password  } = req.body;
@@ -127,19 +140,23 @@ const register = async (req, res)=>{
 const activate = async (req, res)=>{
     try {
         const { activationToken  } = req.params;
+        console.log('ACTIV activationToken', activationToken);
         const user = await _Users.Users.findOne({
             where: {
                 activationToken
             }
         });
+        console.log('ACTIV user', user);
         if (!user) {
             res.sendStatus(404);
             return;
         }
-        user.dataValues.activationToken = null;
+        user.activationToken = null;
         await user?.save();
+        console.log('ACTIV user.activationToken', user.activationToken);
         await sendAuthentication(res, user);
     } catch (error) {
+        console.log('ACTIV error', error);
         res.sendStatus(500);
     }
 };

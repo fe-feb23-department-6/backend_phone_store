@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 import { Request as Req, Response as Res } from 'express';
 import { v4 as uuidv4 } from 'uuid';
@@ -62,7 +63,12 @@ const login = async(req: Req, res: Res) => {
 const refresh = async(req: Req, res: Res) => {
   try {
     const { refreshToken } = req.cookies;
+
+    console.log('REFRESH refreshToken', refreshToken);
+
     const userData = jwtService.validateRefreshToken(refreshToken);
+
+    console.log('REFRESH userData', userData);
 
     if (!userData || typeof userData === 'string') {
       res.sendStatus(401);
@@ -72,6 +78,8 @@ const refresh = async(req: Req, res: Res) => {
 
     const token = await tokenService.getByToken(refreshToken);
 
+    console.log('REFRESH token', token);
+
     if (!token) {
       res.sendStatus(401);
 
@@ -79,6 +87,8 @@ const refresh = async(req: Req, res: Res) => {
     }
 
     const user = await usersService.getUserByEmail(userData.email);
+
+    console.log('REFRESH user', user);
 
     if (!user) {
       res.sendStatus(401);
@@ -88,30 +98,42 @@ const refresh = async(req: Req, res: Res) => {
 
     await sendAuthentication(res, user);
   } catch (error) {
+    console.log('REFRESH error', error);
     res.sendStatus(500);
   }
 };
 
 const sendAuthentication = async(res: Res, user: Users) => {
-  const userData = usersService.normalize(user.dataValues);
+  try {
+    const userData = usersService.normalize(user.dataValues);
 
-  const accessToken = jwtService.generateAccessToken(userData);
+    console.log('AUTH userData', userData);
 
-  const refreshToken = jwtService.generateRefreshToken(userData);
+    const accessToken = jwtService.generateAccessToken(userData);
 
-  await tokenService.save(user.dataValues.id, refreshToken);
+    console.log('AUTH accessToken', accessToken);
 
-  res.cookie('refreshToken', refreshToken, {
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-    httpOnly: true,
-    sameSite: 'none',
-    secure: true,
-  });
+    const refreshToken = jwtService.generateRefreshToken(userData);
 
-  res.send({
-    user: userData,
-    accessToken,
-  });
+    console.log('AUTH refreshToken', refreshToken);
+
+    await tokenService.save(user.dataValues.id, refreshToken);
+
+    res.cookie('refreshToken', refreshToken, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+    });
+
+    res.send({
+      user: userData,
+      accessToken,
+    });
+  } catch (error) {
+    console.log('AUTH error', error);
+    res.sendStatus(500);
+  }
 };
 
 const register = async(req: Req, res: Res) => {
@@ -165,9 +187,13 @@ const activate = async(req: Req, res: Res) => {
   try {
     const { activationToken } = req.params;
 
+    console.log('ACTIV activationToken', activationToken);
+
     const user = await Users.findOne({
       where: { activationToken },
     });
+
+    console.log('ACTIV user', user);
 
     if (!user) {
       res.sendStatus(404);
@@ -175,11 +201,14 @@ const activate = async(req: Req, res: Res) => {
       return;
     }
 
-    user.dataValues.activationToken = null;
+    user.activationToken = null;
     await user?.save();
+
+    console.log('ACTIV user.activationToken', user.activationToken);
 
     await sendAuthentication(res, user);
   } catch (error) {
+    console.log('ACTIV error', error);
     res.sendStatus(500);
   }
 };
