@@ -1,4 +1,4 @@
-'use strict';
+/* eslint-disable no-console */ 'use strict';
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -57,6 +57,8 @@ const updateUser = async ({ id , name , password  })=>{
     });
 };
 const getOneOrderByUser = async (userId, orderId, transaction)=>{
+    console.log('ORDER-BY-SERVICE userId', userId);
+    console.log('ORDER-BY-SERVICE orderId', orderId);
     const orderByUser = await _Orders.Orders.findOne({
         where: {
             id: orderId,
@@ -64,6 +66,7 @@ const getOneOrderByUser = async (userId, orderId, transaction)=>{
         },
         transaction
     });
+    console.log('ORDER-BY-SERVICE orderByUser', orderByUser);
     return orderByUser;
 };
 const getOrderDetails = async (orderId, transaction)=>{
@@ -74,14 +77,15 @@ const getOrderDetails = async (orderId, transaction)=>{
         transaction
     });
     const ordersWithProductInfo = await Promise.all(orderDetails.map(async (order)=>{
-        const productInfo = await _products.productsService.getOneProductById(order.products_id);
+        const productInfo = await _products.productsService.getOneProductById(order.dataValues.products_id);
         return {
-            order_id: order.order_id,
-            products_id: order.products_id,
-            quantity: order.quantity,
+            order_id: order.dataValues.order_id,
+            products_id: order.dataValues.products_id,
+            quantity: order.dataValues.quantity,
             productInfo
         };
     }));
+    console.log('ORDER-BY-DETAILS ordersWithProductInfo', ordersWithProductInfo);
     return ordersWithProductInfo;
 };
 const usersService = {

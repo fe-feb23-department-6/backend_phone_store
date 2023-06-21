@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 
 import { Transaction } from 'sequelize';
@@ -51,6 +52,9 @@ const getOneOrderByUser = async(
   orderId: string,
   transaction: Transaction | undefined,
 ) => {
+  console.log('ORDER-BY-SERVICE userId', userId);
+  console.log('ORDER-BY-SERVICE orderId', orderId);
+
   const orderByUser = await Orders.findOne({
     where: {
       id: orderId,
@@ -58,6 +62,8 @@ const getOneOrderByUser = async(
     },
     transaction,
   });
+
+  console.log('ORDER-BY-SERVICE orderByUser', orderByUser);
 
   return orderByUser;
 };
@@ -76,17 +82,19 @@ const getOrderDetails = async(
   const ordersWithProductInfo = await Promise.all(
     orderDetails.map(async(order) => {
       const productInfo = await productsService.getOneProductById(
-        order.products_id,
+        order.dataValues.products_id,
       );
 
       return {
-        order_id: order.order_id,
-        products_id: order.products_id,
-        quantity: order.quantity,
+        order_id: order.dataValues.order_id,
+        products_id: order.dataValues.products_id,
+        quantity: order.dataValues.quantity,
         productInfo,
       };
     }),
   );
+
+  console.log('ORDER-BY-DETAILS ordersWithProductInfo', ordersWithProductInfo);
 
   return ordersWithProductInfo;
 };
