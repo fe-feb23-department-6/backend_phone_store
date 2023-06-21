@@ -167,5 +167,6 @@ const authController = {
     activate,
     login,
     refresh,
-    logout
+    logout,
+    validatePassword
 };

@@ -40,8 +40,8 @@ const removeUser = async(userId: number): Promise<number> => {
   });
 };
 
-const updateUser = async({ id, name, password }: UserUpdateParams) => {
-  return Users.update({ name, password }, {
+const updateUser = async({ id, name, hash }: UserUpdateParams) => {
+  return Users.update({ name, password: hash }, {
     where: { id },
   });
 };

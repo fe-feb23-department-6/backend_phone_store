@@ -2,6 +2,8 @@
 import { Request as Req, Response as Res } from 'express';
 import { usersService } from '../services/users';
 import { sequelize } from '../server';
+import { authController } from './authentication';
+import bcrypt from 'bcrypt';
 
 const getAllActive = async(req: Req, res: Res) => {
   try {
@@ -73,13 +75,23 @@ const updateUser = async(req: Req, res: Res) => {
 
     const { name, password } = req.body;
 
+    const errors = {
+      password: authController.validatePassword(password),
+    };
+
+    if (errors.password) {
+      return res.status(400).send('Validation error');
+    }
+
     if (!name && !password) {
       res.sendStatus(400);
 
       return;
     }
 
-    await usersService.updateUser({ id: userIdNumber, name, password });
+    const hash = await bcrypt.hash(password, 10);
+
+    await usersService.updateUser({ id: userIdNumber, name, hash });
 
     const updatedUser = await usersService.findUserById(userIdNumber);
 

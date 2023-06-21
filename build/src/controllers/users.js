@@ -10,6 +10,13 @@ Object.defineProperty(exports, "usersController", {
 });
 const _users = require("../services/users");
 const _server = require("../server");
+const _authentication = require("./authentication");
+const _bcrypt = /*#__PURE__*/ _interop_require_default(require("bcrypt"));
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
 const getAllActive = async (req, res)=>{
     try {
         const users = await _users.usersService.getAllActive();
@@ -63,14 +70,21 @@ const updateUser = async (req, res)=>{
             return;
         }
         const { name , password  } = req.body;
+        const errors = {
+            password: _authentication.authController.validatePassword(password)
+        };
+        if (errors.password) {
+            return res.status(400).send('Validation error');
+        }
         if (!name && !password) {
             res.sendStatus(400);
             return;
         }
+        const hash = await _bcrypt.default.hash(password, 10);
         await _users.usersService.updateUser({
             id: userIdNumber,
             name,
-            password
+            hash
         });
         const updatedUser = await _users.usersService.findUserById(userIdNumber);
         const normalizedUser = await _users.usersService.normalize(updatedUser?.dataValues);
