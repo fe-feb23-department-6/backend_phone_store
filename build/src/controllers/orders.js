@@ -1,4 +1,4 @@
-/* eslint-disable no-console */ 'use strict';
+'use strict';
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -35,14 +35,11 @@ const getOrders = async (req, res)=>{
 const getOneOrder = async (req, res)=>{
     const { orderId  } = req.params;
     const transaction = await _server.sequelize?.transaction();
-    console.log('GET-ONE orderId', orderId);
     try {
         const ordersWithProductInfo = await _orders.orderService.getOneOrder(orderId, transaction);
-        console.log('GET-ONE ordersWithProductInfo', ordersWithProductInfo);
         await transaction?.commit();
         res.json(ordersWithProductInfo);
     } catch (error) {
-        console.log('GET-ONE error', error);
         await transaction?.rollback();
         res.sendStatus(500);
     }

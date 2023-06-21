@@ -1,4 +1,4 @@
-/* eslint-disable no-console */ 'use strict';
+'use strict';
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -57,8 +57,6 @@ const updateUser = async ({ id , name , password  })=>{
     });
 };
 const getOneOrderByUser = async (userId, orderId, transaction)=>{
-    console.log('ORDER-BY-SERVICE userId', userId);
-    console.log('ORDER-BY-SERVICE orderId', orderId);
     const orderByUser = await _Orders.Orders.findOne({
         where: {
             id: orderId,
@@ -66,7 +64,6 @@ const getOneOrderByUser = async (userId, orderId, transaction)=>{
         },
         transaction
     });
-    console.log('ORDER-BY-SERVICE orderByUser', orderByUser);
     return orderByUser;
 };
 const getOrderDetails = async (orderId, transaction)=>{
@@ -85,7 +82,6 @@ const getOrderDetails = async (orderId, transaction)=>{
             productInfo
         };
     }));
-    console.log('ORDER-BY-DETAILS ordersWithProductInfo', ordersWithProductInfo);
     return ordersWithProductInfo;
 };
 const usersService = {

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 'use strict';
 import { Request as Req, Response as Res } from 'express';
 import { sequelize } from '../server';
@@ -37,21 +36,16 @@ const getOneOrder = async(req: Req, res: Res) => {
   const { orderId } = req.params;
   const transaction = await sequelize?.transaction();
 
-  console.log('GET-ONE orderId', orderId);
-
   try {
     const ordersWithProductInfo = await orderService.getOneOrder(
       orderId,
       transaction,
     );
 
-    console.log('GET-ONE ordersWithProductInfo', ordersWithProductInfo);
-
     await transaction?.commit();
 
     res.json(ordersWithProductInfo);
   } catch (error) {
-    console.log('GET-ONE error', error);
     await transaction?.rollback();
     res.sendStatus(500);
   }

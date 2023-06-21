@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 'use strict';
 
 import { Op, Transaction, WhereOptions } from 'sequelize';
@@ -71,12 +70,8 @@ const getOneOrder = async(
     transaction,
   });
 
-  console.log('GET-ONE-DETAILS orders', orders);
-
   const ordersWithProductInfo = await Promise.all(
     orders.map(async(order) => {
-      console.log('GET-ONE-MAP order', order);
-
       const productInfo = await productsService.getOneProductById(
         order.dataValues.products_id,
       );
@@ -90,8 +85,6 @@ const getOneOrder = async(
       };
     }),
   );
-
-  console.log('GET-ONE-DETAILS ordersWithProductInfo', ordersWithProductInfo);
 
   return ordersWithProductInfo;
 };

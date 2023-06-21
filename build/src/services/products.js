@@ -1,4 +1,4 @@
-/* eslint-disable no-console */ 'use strict';
+'use strict';
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -84,14 +84,12 @@ const getNamespaceListByProductsId = async (namespaceId)=>{
     }
 };
 const getOneProductById = async (productId)=>{
-    console.log('GET-ONE-ID productId', productId);
     try {
         const product = await _Products.Products.findOne({
             where: {
                 id: productId
             }
         });
-        console.log('GET-ONE-ID product', product);
         return product;
     } catch (error) {
         throw new Error('Failed to get product');
