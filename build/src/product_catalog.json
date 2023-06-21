@@ -514,7 +514,7 @@
         }
       }
     },
-    "/img/{*}": {
+    "/{imagePath}": {
       "get": {
         "tags": [
           "images"
@@ -523,12 +523,12 @@
         "operationId": "getImage",
         "parameters": [
           {
-            "name": "*",
+            "name": "imagePath",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "example": "phones/apple-iphone-xr/coral/00.jpg"
+              "example": "img/phones/apple-iphone-xr/coral/00.jpg"
             }
           }
         ],

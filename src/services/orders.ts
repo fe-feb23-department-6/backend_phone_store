@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 
 import { Op, Transaction, WhereOptions } from 'sequelize';
@@ -16,7 +17,13 @@ const createOrder = async(
   products: Product[],
   transaction: Transaction | undefined,
 ) => {
+  console.log('CREATE - userId+createOrder', userId);
+  console.log('CREATE - products+createOrder', products);
+  console.log('CREATE - transaction+createOrder', transaction);
+
   const order = await Orders.create({ user_id: userId }, { transaction });
+
+  console.log('CREATE - order', order);
 
   const orderDetails = products.map((product: Product) => ({
     order_id: order.id,
@@ -24,11 +31,13 @@ const createOrder = async(
     quantity: product.quantity,
   }));
 
+  console.log('CREATE - orderDetails', orderDetails);
+
   await OrderDetails.bulkCreate(orderDetails, { transaction });
 
   return {
-    id: order.id,
-    user_id: order.user_id,
+    id: order.dataValues.id,
+    user_id: order.dataValues.user_id,
     products: orderDetails,
   };
 };
