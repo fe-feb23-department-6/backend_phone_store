@@ -13,12 +13,9 @@ const _Orders = require("../models/Orders");
 const _orders = require("../services/orders");
 const createOrder = async (req, res)=>{
     const { userId , products  } = req.body;
-    console.log('CREATE - userId', userId);
-    console.log('CREATE - products', products);
     const transaction = await _server.sequelize?.transaction();
     try {
         const order = await _orders.orderService.createOrder(userId, products, transaction);
-        console.log('CREATE - order+main', order);
         await transaction?.commit();
         res.json(order);
     } catch (error) {
@@ -38,11 +35,14 @@ const getOrders = async (req, res)=>{
 const getOneOrder = async (req, res)=>{
     const { orderId  } = req.params;
     const transaction = await _server.sequelize?.transaction();
+    console.log('GET-ONE orderId', orderId);
     try {
         const ordersWithProductInfo = await _orders.orderService.getOneOrder(orderId, transaction);
+        console.log('GET-ONE ordersWithProductInfo', ordersWithProductInfo);
         await transaction?.commit();
         res.json(ordersWithProductInfo);
     } catch (error) {
+        console.log('GET-ONE error', error);
         await transaction?.rollback();
         res.sendStatus(500);
     }
