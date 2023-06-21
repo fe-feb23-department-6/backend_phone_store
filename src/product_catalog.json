@@ -437,7 +437,7 @@
         "tags": [
           "products"
         ],
-        "description": "Get the list of products added to cart",
+        "description": "Get the list of products added to cart. Provide phone IDs as a comma-separated string in the 'phoneIds' parameter.",
         "operationId": "getCart",
         "parameters": [
           {
@@ -448,10 +448,8 @@
             "style": "form",
             "explode": false,
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+              "type": "string",
+              "example": "1,2,3"
             }
           }
         ],
@@ -480,7 +478,7 @@
         "tags": [
           "products"
         ],
-        "description": "Get the list of favorites products",
+        "description": "Get the list of products added to cart. Provide phone IDs as a comma-separated string in the 'phoneIds' parameter.",
         "operationId": "getFavorites",
         "parameters": [
           {
@@ -491,10 +489,8 @@
             "style": "form",
             "explode": false,
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+              "type": "string",
+              "example": "1,2,3"
             }
           }
         ],
@@ -518,7 +514,7 @@
         }
       }
     },
-    "/{imagePath}": {
+    "/img/{*}": {
       "get": {
         "tags": [
           "images"
@@ -527,12 +523,12 @@
         "operationId": "getImage",
         "parameters": [
           {
-            "name": "imagePath",
+            "name": "*",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "example": "img/phones/apple-iphone-xr/coral/00.jpg"
+              "example": "phones/apple-iphone-xr/coral/00.jpg"
             }
           }
         ],
