@@ -78,7 +78,7 @@ const getOneOrder = async(
       console.log('GET-ONE-MAP order', order);
 
       const productInfo = await productsService.getOneProductById(
-        order.products_id,
+        order.dataValues.products_id,
       );
 
       return {

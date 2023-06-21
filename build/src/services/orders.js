@@ -68,7 +68,7 @@ const getOneOrder = async (orderId, transaction)=>{
     console.log('GET-ONE-DETAILS orders', orders);
     const ordersWithProductInfo = await Promise.all(orders.map(async (order)=>{
         console.log('GET-ONE-MAP order', order);
-        const productInfo = await _products.productsService.getOneProductById(order.products_id);
+        const productInfo = await _products.productsService.getOneProductById(order.dataValues.products_id);
         return {
             id: order.id,
             order_id: order.order_id,
