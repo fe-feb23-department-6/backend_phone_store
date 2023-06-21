@@ -1,4 +1,4 @@
-/* eslint-disable no-console */ 'use strict';
+'use strict';
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -87,13 +87,11 @@ const getOneOrderByUser = async (req, res)=>{
     const transaction = await _server.sequelize?.transaction();
     try {
         const orderByUser = await _users.usersService.getOneOrderByUser(userId, orderId, transaction);
-        console.log('ORDER-BY-USER orderByUser', orderByUser);
         if (!orderByUser) {
             res.sendStatus(404);
             return;
         }
         const ordersWithProductInfo = await _users.usersService.getOrderDetails(orderId, transaction);
-        console.log('ORDER-BY-USER ordersWithProductInfo', ordersWithProductInfo);
         await transaction?.commit();
         res.json(ordersWithProductInfo);
     } catch (error) {

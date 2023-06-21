@@ -1,4 +1,4 @@
-/* eslint-disable no-console */ 'use strict';
+'use strict';
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -65,9 +65,7 @@ const getOneOrder = async (orderId, transaction)=>{
         },
         transaction
     });
-    console.log('GET-ONE-DETAILS orders', orders);
     const ordersWithProductInfo = await Promise.all(orders.map(async (order)=>{
-        console.log('GET-ONE-MAP order', order);
         const productInfo = await _products.productsService.getOneProductById(order.dataValues.products_id);
         return {
             id: order.dataValues.id,
@@ -77,7 +75,6 @@ const getOneOrder = async (orderId, transaction)=>{
             productInfo
         };
     }));
-    console.log('GET-ONE-DETAILS ordersWithProductInfo', ordersWithProductInfo);
     return ordersWithProductInfo;
 };
 const deleteOrder = async (orderId, transaction)=>{
