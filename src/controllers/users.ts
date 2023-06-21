@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 import { Request as Req, Response as Res } from 'express';
 import { usersService } from '../services/users';
@@ -108,6 +109,8 @@ const getOneOrderByUser = async(req: Req, res: Res) => {
       transaction,
     );
 
+    console.log('ORDER-BY-USER orderByUser', orderByUser);
+
     if (!orderByUser) {
       res.sendStatus(404);
 
@@ -118,6 +121,8 @@ const getOneOrderByUser = async(req: Req, res: Res) => {
       orderId,
       transaction,
     );
+
+    console.log('ORDER-BY-USER ordersWithProductInfo', ordersWithProductInfo);
 
     await transaction?.commit();
 

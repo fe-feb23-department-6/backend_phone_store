@@ -82,10 +82,10 @@ const getOneOrder = async(
       );
 
       return {
-        id: order.id,
-        order_id: order.order_id,
-        products_id: order.products_id,
-        quantity: order.quantity,
+        id: order.dataValues.id,
+        order_id: order.dataValues.order_id,
+        products_id: order.dataValues.products_id,
+        quantity: order.dataValues.quantity,
         productInfo,
       };
     }),

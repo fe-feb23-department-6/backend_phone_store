@@ -70,10 +70,10 @@ const getOneOrder = async (orderId, transaction)=>{
         console.log('GET-ONE-MAP order', order);
         const productInfo = await _products.productsService.getOneProductById(order.dataValues.products_id);
         return {
-            id: order.id,
-            order_id: order.order_id,
-            products_id: order.products_id,
-            quantity: order.quantity,
+            id: order.dataValues.id,
+            order_id: order.dataValues.order_id,
+            products_id: order.dataValues.products_id,
+            quantity: order.dataValues.quantity,
             productInfo
         };
     }));
