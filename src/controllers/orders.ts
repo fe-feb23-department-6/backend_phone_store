@@ -13,8 +13,6 @@ const createOrder = async(req: Req, res: Res) => {
 
   const transaction = await sequelize?.transaction();
 
-  console.log('CREATE - transaction', transaction);
-
   try {
     const order = await orderService.createOrder(userId, products, transaction);
 

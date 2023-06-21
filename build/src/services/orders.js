@@ -15,7 +15,6 @@ const _products = require("./products");
 const createOrder = async (userId, products, transaction)=>{
     console.log('CREATE - userId+createOrder', userId);
     console.log('CREATE - products+createOrder', products);
-    console.log('CREATE - transaction+createOrder', transaction);
     const order = await _Orders.Orders.create({
         user_id: userId
     }, {
@@ -23,7 +22,7 @@ const createOrder = async (userId, products, transaction)=>{
     });
     console.log('CREATE - order', order);
     const orderDetails = products.map((product)=>({
-            order_id: order.id,
+            order_id: order.dataValues.id,
             products_id: product.productId,
             quantity: product.quantity
         }));

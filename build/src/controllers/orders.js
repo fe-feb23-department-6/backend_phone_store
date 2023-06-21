@@ -16,7 +16,6 @@ const createOrder = async (req, res)=>{
     console.log('CREATE - userId', userId);
     console.log('CREATE - products', products);
     const transaction = await _server.sequelize?.transaction();
-    console.log('CREATE - transaction', transaction);
     try {
         const order = await _orders.orderService.createOrder(userId, products, transaction);
         console.log('CREATE - order+main', order);
