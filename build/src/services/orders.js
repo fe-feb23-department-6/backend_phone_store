@@ -13,20 +13,16 @@ const _OrderDetails = require("../models/OrderDetails");
 const _Orders = require("../models/Orders");
 const _products = require("./products");
 const createOrder = async (userId, products, transaction)=>{
-    console.log('CREATE - userId+createOrder', userId);
-    console.log('CREATE - products+createOrder', products);
     const order = await _Orders.Orders.create({
         user_id: userId
     }, {
         transaction
     });
-    console.log('CREATE - order', order);
     const orderDetails = products.map((product)=>({
             order_id: order.dataValues.id,
             products_id: product.productId,
             quantity: product.quantity
         }));
-    console.log('CREATE - orderDetails', orderDetails);
     await _OrderDetails.OrderDetails.bulkCreate(orderDetails, {
         transaction
     });
@@ -69,7 +65,9 @@ const getOneOrder = async (orderId, transaction)=>{
         },
         transaction
     });
+    console.log('GET-ONE-DETAILS orders', orders);
     const ordersWithProductInfo = await Promise.all(orders.map(async (order)=>{
+        console.log('GET-ONE-MAP order', order);
         const productInfo = await _products.productsService.getOneProductById(order.products_id);
         return {
             id: order.id,
@@ -79,6 +77,7 @@ const getOneOrder = async (orderId, transaction)=>{
             productInfo
         };
     }));
+    console.log('GET-ONE-DETAILS ordersWithProductInfo', ordersWithProductInfo);
     return ordersWithProductInfo;
 };
 const deleteOrder = async (orderId, transaction)=>{

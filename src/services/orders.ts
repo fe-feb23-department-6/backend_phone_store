@@ -17,20 +17,13 @@ const createOrder = async(
   products: Product[],
   transaction: Transaction | undefined,
 ) => {
-  console.log('CREATE - userId+createOrder', userId);
-  console.log('CREATE - products+createOrder', products);
-
   const order = await Orders.create({ user_id: userId }, { transaction });
-
-  console.log('CREATE - order', order);
 
   const orderDetails = products.map((product: Product) => ({
     order_id: order.dataValues.id,
     products_id: product.productId,
     quantity: product.quantity,
   }));
-
-  console.log('CREATE - orderDetails', orderDetails);
 
   await OrderDetails.bulkCreate(orderDetails, { transaction });
 
@@ -78,8 +71,12 @@ const getOneOrder = async(
     transaction,
   });
 
+  console.log('GET-ONE-DETAILS orders', orders);
+
   const ordersWithProductInfo = await Promise.all(
     orders.map(async(order) => {
+      console.log('GET-ONE-MAP order', order);
+
       const productInfo = await productsService.getOneProductById(
         order.products_id,
       );
@@ -93,6 +90,8 @@ const getOneOrder = async(
       };
     }),
   );
+
+  console.log('GET-ONE-DETAILS ordersWithProductInfo', ordersWithProductInfo);
 
   return ordersWithProductInfo;
 };

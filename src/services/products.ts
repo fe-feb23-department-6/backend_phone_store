@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 import { sequelize } from '../server';
 import { literal } from 'sequelize';
@@ -100,12 +101,16 @@ const getNamespaceListByProductsId = async(
 };
 
 const getOneProductById = async(productId: string) => {
+  console.log('GET-ONE-ID productId', productId);
+
   try {
     const product = await Products.findOne({
       where: {
         id: productId,
       },
     });
+
+    console.log('GET-ONE-ID product', product);
 
     return product;
   } catch (error) {

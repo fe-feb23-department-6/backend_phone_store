@@ -7,16 +7,10 @@ import { orderService } from '../services/orders';
 
 const createOrder = async(req: Req, res: Res) => {
   const { userId, products } = req.body;
-
-  console.log('CREATE - userId', userId);
-  console.log('CREATE - products', products);
-
   const transaction = await sequelize?.transaction();
 
   try {
     const order = await orderService.createOrder(userId, products, transaction);
-
-    console.log('CREATE - order+main', order);
 
     await transaction?.commit();
 
@@ -43,16 +37,21 @@ const getOneOrder = async(req: Req, res: Res) => {
   const { orderId } = req.params;
   const transaction = await sequelize?.transaction();
 
+  console.log('GET-ONE orderId', orderId);
+
   try {
     const ordersWithProductInfo = await orderService.getOneOrder(
       orderId,
       transaction,
     );
 
+    console.log('GET-ONE ordersWithProductInfo', ordersWithProductInfo);
+
     await transaction?.commit();
 
     res.json(ordersWithProductInfo);
   } catch (error) {
+    console.log('GET-ONE error', error);
     await transaction?.rollback();
     res.sendStatus(500);
   }
