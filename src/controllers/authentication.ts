@@ -209,4 +209,5 @@ export const authController = {
   login,
   refresh,
   logout,
+  validatePassword,
 };

@@ -46,10 +46,10 @@ const removeUser = async (userId)=>{
         }
     });
 };
-const updateUser = async ({ id , name , password  })=>{
+const updateUser = async ({ id , name , hash  })=>{
     return _Users.Users.update({
         name,
-        password
+        password: hash
     }, {
         where: {
             id
