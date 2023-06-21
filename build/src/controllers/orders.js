@@ -1,4 +1,4 @@
-'use strict';
+/* eslint-disable no-console */ 'use strict';
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -13,9 +13,13 @@ const _Orders = require("../models/Orders");
 const _orders = require("../services/orders");
 const createOrder = async (req, res)=>{
     const { userId , products  } = req.body;
+    console.log('CREATE - userId', userId);
+    console.log('CREATE - products', products);
     const transaction = await _server.sequelize?.transaction();
+    console.log('CREATE - transaction', transaction);
     try {
         const order = await _orders.orderService.createOrder(userId, products, transaction);
+        console.log('CREATE - order+main', order);
         await transaction?.commit();
         res.json(order);
     } catch (error) {

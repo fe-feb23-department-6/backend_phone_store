@@ -1,4 +1,4 @@
-'use strict';
+/* eslint-disable no-console */ 'use strict';
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -13,22 +13,27 @@ const _OrderDetails = require("../models/OrderDetails");
 const _Orders = require("../models/Orders");
 const _products = require("./products");
 const createOrder = async (userId, products, transaction)=>{
+    console.log('CREATE - userId+createOrder', userId);
+    console.log('CREATE - products+createOrder', products);
+    console.log('CREATE - transaction+createOrder', transaction);
     const order = await _Orders.Orders.create({
         user_id: userId
     }, {
         transaction
     });
+    console.log('CREATE - order', order);
     const orderDetails = products.map((product)=>({
             order_id: order.id,
             products_id: product.productId,
             quantity: product.quantity
         }));
+    console.log('CREATE - orderDetails', orderDetails);
     await _OrderDetails.OrderDetails.bulkCreate(orderDetails, {
         transaction
     });
     return {
-        id: order.id,
-        user_id: order.user_id,
+        id: order.dataValues.id,
+        user_id: order.dataValues.user_id,
         products: orderDetails
     };
 };

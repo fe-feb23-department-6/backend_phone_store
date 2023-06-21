@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 import { Request as Req, Response as Res } from 'express';
 import { sequelize } from '../server';
@@ -6,10 +7,18 @@ import { orderService } from '../services/orders';
 
 const createOrder = async(req: Req, res: Res) => {
   const { userId, products } = req.body;
+
+  console.log('CREATE - userId', userId);
+  console.log('CREATE - products', products);
+
   const transaction = await sequelize?.transaction();
+
+  console.log('CREATE - transaction', transaction);
 
   try {
     const order = await orderService.createOrder(userId, products, transaction);
+
+    console.log('CREATE - order+main', order);
 
     await transaction?.commit();
 
