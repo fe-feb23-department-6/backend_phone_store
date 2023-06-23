@@ -33,7 +33,7 @@ function send({ email , subject , html  }) {
     });
 }
 function sendActivationLink(email, token) {
-    const link = `https://backend-phone-store.onrender.com/activation/${token}`;
+    const link = `${process.env.CLIENT_URL}/activation/${token}`;
     return send({
         email,
         subject: 'Account activation',
