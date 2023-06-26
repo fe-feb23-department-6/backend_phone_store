@@ -33,7 +33,8 @@ const sequelize = (0, _dbInit.dbInit)();
 app.use((0, _cors.default)({
     origin: [
         'http://localhost:3000',
-        process.env.CLIENT_URL
+        process.env.CLIENT_URL,
+        'https://fe-feb23-department-6.github.io'
     ],
     credentials: true
 }));
